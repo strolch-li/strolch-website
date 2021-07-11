@@ -1,0 +1,424 @@
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta name=description content="Strolch is a parameterized framework for use on servers and IoT"><meta name=author content="Strolch"><link rel=icon href=/favicon.ico type=image/ico><title>Example Set-Up - Strolch</title><link href=/css/nucleus.css?1626028660 rel=stylesheet><link href=/css/fontawesome-all.min.css?1626028660 rel=stylesheet><link href=/css/hybrid.css?1626028660 rel=stylesheet><link href=/css/featherlight.min.css?1626028660 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1626028660 rel=stylesheet><link href=/css/auto-complete.css?1626028660 rel=stylesheet><link href=/css/atom-one-dark-reasonable.css?1626028660 rel=stylesheet><link href=/css/theme.css?1626028660 rel=stylesheet><link href=/css/hugo-theme.css?1626028660 rel=stylesheet><link href=/css/theme-green.css?1626028660 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1626028660></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}</style></head><body data-url=/plc/example-set-up/><nav id=sidebar><div id=header-wrapper><div id=header><a id=logo href=/><img src=/logo.png></a></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label><input data-search-input id=search-by type=search placeholder=Search...>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/js/lunr.min.js?1626028660></script><script type=text/javascript src=/js/auto-complete.js?1626028660></script><script type=text/javascript>var baseurl="https:\/\/strolch.li\/";</script><script type=text/javascript src=/js/search.js?1626028660></script></div><section id=homelinks><ul><li><a class=padding href=/><i class="fas fa-home"></i>Home</a></li></ul></section><div class=highlightable><ul class=topics><li data-nav-id=/api/ title=API class=dd-item><a href=/api/>API</a></li><li data-nav-id=/history/ title=History class=dd-item><a href=/history/>History</a></li><li data-nav-id=/documentation/ title=Documentation class=dd-item><a href=/documentation/>Documentation</a><ul><li data-nav-id=/documentation/architecture/ title=Architecture class=dd-item><a href=/documentation/architecture/>Architecture</a></li><li data-nav-id=/documentation/model/ title=Model class=dd-item><a href=/documentation/model/>Model</a></li><li data-nav-id=/documentation/do-and-donts/ title="Do and Don't" class=dd-item><a href=/documentation/do-and-donts/>Do and Don't</a></li><li data-nav-id=/documentation/runtime-configuration/ title="Runtime Configuration" class=dd-item><a href=/documentation/runtime-configuration/>Runtime Configuration</a></li><li data-nav-id=/documentation/realms/ title=Realms class=dd-item><a href=/documentation/realms/>Realms</a></li><li data-nav-id=/documentation/components/ title=Components class=dd-item><a href=/documentation/components/>Components</a></li><li data-nav-id=/documentation/services-and-commands/ title="Services and Commands" class=dd-item><a href=/documentation/services-and-commands/>Services and Commands</a></li><li data-nav-id=/documentation/searches/ title=Searches class=dd-item><a href=/documentation/searches/>Searches</a></li><li data-nav-id=/documentation/queries/ title=Queries class=dd-item><a href=/documentation/queries/>Queries</a></li><li data-nav-id=/documentation/transactions/ title=Transactions class=dd-item><a href=/documentation/transactions/>Transactions</a></li><li data-nav-id=/documentation/policies/ title=Policies class=dd-item><a href=/documentation/policies/>Policies</a></li><li data-nav-id=/documentation/observers/ title=Observers class=dd-item><a href=/documentation/observers/>Observers</a></li><li data-nav-id=/documentation/versioning/ title=Versioning class=dd-item><a href=/documentation/versioning/>Versioning</a></li><li data-nav-id=/documentation/reports/ title=Reports class=dd-item><a href=/documentation/reports/>Reports</a></li><li data-nav-id=/documentation/priviles/ title=Privileges class=dd-item><a href=/documentation/priviles/>Privileges</a></li></ul></li><li data-nav-id=/plc/ title=PLC class="dd-item
+parent"><a href=/plc/>PLC</a><ul><li data-nav-id=/plc/architecture/ title=Architecture class=dd-item><a href=/plc/architecture/>Architecture</a></li><li data-nav-id=/plc/example-set-up/ title="Example Set-Up" class="dd-item active"><a href=/plc/example-set-up/>Example Set-Up</a></li></ul></li><li data-nav-id=/tutorial/ title=Tutorial class=dd-item><a href=/tutorial/>Tutorial</a><ul><li data-nav-id=/tutorial/configuration/ title=Configuration class=dd-item><a href=/tutorial/configuration/>Configuration</a></li><li data-nav-id=/tutorial/model/ title=Model class=dd-item><a href=/tutorial/model/>Model</a></li><li data-nav-id=/tutorial/crud-book/ title="CRUD Book" class=dd-item><a href=/tutorial/crud-book/>CRUD Book</a></li></ul></li><li data-nav-id=/download/ title=Download class=dd-item><a href=/download/>Download</a></li><li data-nav-id=/development/ title=Development class=dd-item><a href=/development/>Development</a></li></ul><section id=shortcuts><h3>More</h3><ul><li><a class=padding href=https://strolch.li/tags><i class="fas fa-tags"></i>Tags</a></li><li><a class=padding href=https://github.com/strolch-li><i class="fab fa-github"></i>GitHub project</a></li></ul></section><section id=footer><p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a>from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=top-github-link><a class=github-link title="Edit this page" href=https://github.com/strolch-li/strolch/tree/develop/li.strolch.websiteplc/example-set-up.md target=blank><i class="fas fa-code-branch"></i><span id=top-github-link-text>Edit this page</span></a></div><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span><span id=toc-menu><i class="fas fa-list-alt"></i></span><span class=links><a href=/>Strolch Overview</a> > <a href=/plc/>PLC</a> > Example Set-Up</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><a href=#example-set-up>Example Set-Up</a></li><li><a href=#new-project>New Project</a></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Example Set-Up</h1><h2 id=example-set-up>Example Set-Up</h2><p>This example setup describes the movement of containers over conveyors. The
+conveyors have motors which can be started and stopped by a GPIO output pin
+controlled on a Raspberry Pi and each conveyor has a light barrier to detect the
+occupancy of a container and the Raspberry Pi detects this on GPIO input pins.</p><p>Further at each conveyor location is a barcode reader to read the ID of a
+container.</p><p>The general idea is that the PLC notifies a Strolch agent of changes, and only
+turns conveyors on, when the agent gives the command. Thus the agent handles
+business logic and the PLC controls the I/Os.</p><p><img src=/assets/images/Strolch-Plc-Example.png alt="Strolch PLC Example"></p><h2 id=new-project>New Project</h2><ol><li>First create a new Strolch Web project using the Strolch Maven archetype</li><li>Now add the following Maven dependencies:</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;project&gt;</span>
+    <span style=color:#f92672>&lt;properties&gt;</span>
+      <span style=color:#f92672>&lt;strolch.version&gt;</span>1.6.0-SNAPSHOT<span style=color:#f92672>&lt;/strolch.version&gt;</span>
+      <span style=color:#f92672>&lt;strolch.plc.version&gt;</span>0.1.0-SNAPSHOT<span style=color:#f92672>&lt;/strolch.plc.version&gt;</span>
+    <span style=color:#f92672>&lt;/properties&gt;</span>
+    
+    <span style=color:#f92672>&lt;dependencyManagement&gt;</span>
+      <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>li.strolch<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>li.strolch.bom<span style=color:#f92672>&lt;/artifactId&gt;</span>
+        <span style=color:#f92672>&lt;type&gt;</span>pom<span style=color:#f92672>&lt;/type&gt;</span>
+        <span style=color:#f92672>&lt;version&gt;</span>${strolch.version}<span style=color:#f92672>&lt;/version&gt;</span>
+        <span style=color:#f92672>&lt;scope&gt;</span>import<span style=color:#f92672>&lt;/scope&gt;</span>
+      <span style=color:#f92672>&lt;/dependency&gt;</span>
+      <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>li.strolch<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>strolch-plc-bom<span style=color:#f92672>&lt;/artifactId&gt;</span>
+        <span style=color:#f92672>&lt;type&gt;</span>pom<span style=color:#f92672>&lt;/type&gt;</span>
+        <span style=color:#f92672>&lt;version&gt;</span>${strolch.plc.version}<span style=color:#f92672>&lt;/version&gt;</span>
+        <span style=color:#f92672>&lt;scope&gt;</span>import<span style=color:#f92672>&lt;/scope&gt;</span>
+      <span style=color:#f92672>&lt;/dependency&gt;</span>
+    <span style=color:#f92672>&lt;/dependencyManagement&gt;</span>
+    
+    <span style=color:#f92672>&lt;dependencies&gt;</span>
+      <span style=color:#75715e>&lt;!-- PLC --&gt;</span>
+      <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>li.strolch<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>strolch-plc-core<span style=color:#f92672>&lt;/artifactId&gt;</span>
+      <span style=color:#f92672>&lt;/dependency&gt;</span>
+      <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>li.strolch<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>strolch-plc-rest<span style=color:#f92672>&lt;/artifactId&gt;</span>
+      <span style=color:#f92672>&lt;/dependency&gt;</span>
+      <span style=color:#f92672>&lt;dependency&gt;</span>
+        <span style=color:#f92672>&lt;groupId&gt;</span>li.strolch<span style=color:#f92672>&lt;/groupId&gt;</span>
+        <span style=color:#f92672>&lt;artifactId&gt;</span>strolch-plc-gw-client<span style=color:#f92672>&lt;/artifactId&gt;</span>
+      <span style=color:#f92672>&lt;/dependency&gt;</span>
+    <span style=color:#f92672>&lt;/dependencies&gt;</span>
+<span style=color:#f92672>&lt;/project&gt;</span>
+</code></pre></div><ol start=3><li><p>Add a bower dependency: <code>"strolch-wc-plc": "4treesCH/strolch-wc-plc#^0.3.4"</code>
+to <code>src/main/webapp/bower.json</code></p><p>After adding the dependency, run <code>gulp</code> in the webapp directory. Gulp should
+have been installed through the instructions from
+the <a href=/development>development page</a>.</p></li><li><p>Now we need to add the PLC web views to our new project. This is added in
+the <code>src/main/webapp/app/src/c-app.html</code> file. Add the following:</p></li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#75715e>&lt;!-- HTML Imports --&gt;</span>
+&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;import&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;../bower_components/strolch-wc-plc/strolch-wc-plc-connections.html&#34;</span>&gt;
+&lt;<span style=color:#f92672>link</span> <span style=color:#a6e22e>rel</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;import&#34;</span> <span style=color:#a6e22e>href</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;../bower_components/strolch-wc-plc/strolch-wc-plc-logical-devices.html&#34;</span>&gt;
+
+<span style=color:#75715e>&lt;!-- Change default-page to plcLogicalDevices --&gt;</span>
+&lt;<span style=color:#f92672>c-app-routing</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;appRouting&#34;</span>
+         <span style=color:#a6e22e>login-page</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;login&#34;</span>
+         <span style=color:#a6e22e>default-page</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;plcLogicalDevices&#34;</span>
+         <span style=color:#a6e22e>auth-valid</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[authTokenValid]]&#34;</span>
+         <span style=color:#a6e22e>page</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{page}}&#34;</span>
+         <span style=color:#a6e22e>route-tail</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{routeTail}}&#34;</span>
+         <span style=color:#a6e22e>use-hash-as-path</span>&gt;&lt;/<span style=color:#f92672>c-app-routing</span>&gt;
+
+<span style=color:#75715e>&lt;!-- Add the new pages in the iron-pages element: --&gt;</span>
+&lt;<span style=color:#f92672>template</span> <span style=color:#a6e22e>is</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;dom-if&#34;</span> <span style=color:#a6e22e>if</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[equal(page, &#39;plcConnections&#39;)]]&#34;</span> <span style=color:#a6e22e>restamp</span>&gt;
+    &lt;<span style=color:#f92672>strolch-wc-plc-connections</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;plcConnections&#34;</span>
+            <span style=color:#a6e22e>base-path</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;../&#34;</span>
+            <span style=color:#a6e22e>base-rest-path</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[baseRestPath]]&#34;</span>
+            <span style=color:#a6e22e>route</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{subroute}}&#34;</span>&gt;&lt;/<span style=color:#f92672>strolch-wc-plc-connections</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+&lt;<span style=color:#f92672>template</span> <span style=color:#a6e22e>is</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;dom-if&#34;</span> <span style=color:#a6e22e>if</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[equal(page, &#39;plcLogicalDevices&#39;)]]&#34;</span> <span style=color:#a6e22e>restamp</span>&gt;
+    &lt;<span style=color:#f92672>strolch-wc-plc-logical-devices</span> <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;plcLogicalDevices&#34;</span>
+            <span style=color:#a6e22e>base-path</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;../&#34;</span>
+            <span style=color:#a6e22e>base-rest-path</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[baseRestPath]]&#34;</span>
+            <span style=color:#a6e22e>base-ws-path</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;[[baseWsPath]]&#34;</span>
+            <span style=color:#a6e22e>route</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;{{subroute}}&#34;</span>&gt;&lt;/<span style=color:#f92672>strolch-wc-plc-logical-devices</span>&gt;
+&lt;/<span style=color:#f92672>template</span>&gt;
+
+// add a new property to the WebSocket path for observing changes on the PLC
+wsObserverPath: {
+    type: String,
+    value: function () {
+        return CustomWeb.baseWsPath + &#34;/plc/observer&#34;;
+    }
+}
+</code></pre></div><ol start=5><li>Don&rsquo;t forget to add the PLC Rest classes to your <code>ResourceConfig</code></li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#a6e22e>@ApplicationPath</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;rest&#34;</span><span style=color:#f92672>)</span>
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RestfulApplication</span> <span style=color:#66d9ef>extends</span> ResourceConfig <span style=color:#f92672>{</span>
+
+    <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>RestfulApplication</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+
+        <span style=color:#f92672>...</span>
+
+        <span style=color:#75715e>// strolch plc services
+</span><span style=color:#75715e></span>        packages<span style=color:#f92672>(</span>PlcConnectionsResource<span style=color:#f92672>.</span><span style=color:#a6e22e>class</span><span style=color:#f92672>.</span><span style=color:#a6e22e>getPackage</span><span style=color:#f92672>().</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>());</span>
+
+        <span style=color:#f92672>...</span>
+    <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><ol start=6><li>Now we need to configure the PLC&rsquo;s runtime by
+modifying <code>runtime/StrolchConfiguration.xml</code> and adding the following:</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml>
+<span style=color:#f92672>&lt;StrolchConfiguration&gt;</span>
+    <span style=color:#f92672>&lt;env</span> <span style=color:#a6e22e>id=</span><span style=color:#e6db74>&#34;dev&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#75715e>&lt;!--
+</span><span style=color:#75715e>            This component configures the PlcHandler by
+</span><span style=color:#75715e>            loading the PlcConnections, PlcAddresses and PlcTelegrams
+</span><span style=color:#75715e>        --&gt;</span>
+        <span style=color:#f92672>&lt;Component&gt;</span>
+            <span style=color:#f92672>&lt;name&gt;</span>PlcHandler<span style=color:#f92672>&lt;/name&gt;</span>
+            <span style=color:#f92672>&lt;api&gt;</span>li.strolch.plc.core.PlcHandler<span style=color:#f92672>&lt;/api&gt;</span>
+            <span style=color:#f92672>&lt;impl&gt;</span>li.strolch.plc.core.DefaultPlcHandler<span style=color:#f92672>&lt;/impl&gt;</span>
+            <span style=color:#f92672>&lt;depends&gt;</span>RealmHandler<span style=color:#f92672>&lt;/depends&gt;</span>
+            <span style=color:#f92672>&lt;Properties&gt;</span>
+                <span style=color:#75715e>&lt;!-- The component handling the low level connections --&gt;</span>
+                <span style=color:#f92672>&lt;plcClass&gt;</span>li.strolch.plc.core.hw.DefaultPlc<span style=color:#f92672>&lt;/plcClass&gt;</span>
+            <span style=color:#f92672>&lt;/Properties&gt;</span>
+        <span style=color:#f92672>&lt;/Component&gt;</span>
+
+        <span style=color:#75715e>&lt;!--
+</span><span style=color:#75715e>            This component handles registrations of the PlcServices, i.e. your PLC business logic
+</span><span style=color:#75715e>        --&gt;</span>
+        <span style=color:#f92672>&lt;Component&gt;</span>
+            <span style=color:#f92672>&lt;name&gt;</span>PlcServiceInitializer<span style=color:#f92672>&lt;/name&gt;</span>
+            <span style=color:#f92672>&lt;api&gt;</span>li.strolch.plc.core.PlcServiceInitializer<span style=color:#f92672>&lt;/api&gt;</span>
+            <span style=color:#f92672>&lt;impl&gt;</span>li.strolch.plc.example.CustomPlcServiceInitializer<span style=color:#f92672>&lt;/impl&gt;</span>
+            <span style=color:#f92672>&lt;depends&gt;</span>PlcHandler<span style=color:#f92672>&lt;/depends&gt;</span>
+            <span style=color:#f92672>&lt;Properties&gt;</span>
+            <span style=color:#f92672>&lt;/Properties&gt;</span>
+        <span style=color:#f92672>&lt;/Component&gt;</span>
+
+        <span style=color:#75715e>&lt;!--
+</span><span style=color:#75715e>            This component notifies a Strolch agent of changes on the PLC
+</span><span style=color:#75715e>            only if you have a Strolch server with a configured
+</span><span style=color:#75715e>            li.strolch.plc.gw.server.PlcServerWebSocketEndpoint ready to accept connections
+</span><span style=color:#75715e>        --&gt;</span>
+        <span style=color:#f92672>&lt;Component&gt;</span>
+            <span style=color:#f92672>&lt;name&gt;</span>PlcGwClientHandler<span style=color:#f92672>&lt;/name&gt;</span>
+            <span style=color:#f92672>&lt;api&gt;</span>li.strolch.plc.gw.client.PlcGwClientHandler<span style=color:#f92672>&lt;/api&gt;</span>
+            <span style=color:#f92672>&lt;impl&gt;</span>li.strolch.plc.gw.client.PlcGwClientHandler<span style=color:#f92672>&lt;/impl&gt;</span>
+            <span style=color:#f92672>&lt;depends&gt;</span>PlcHandler<span style=color:#f92672>&lt;/depends&gt;</span>
+            <span style=color:#f92672>&lt;depends&gt;</span>PlcServiceInitializer<span style=color:#f92672>&lt;/depends&gt;</span>
+            <span style=color:#f92672>&lt;Properties&gt;</span>
+                <span style=color:#f92672>&lt;plcId&gt;</span>plc-01<span style=color:#f92672>&lt;/plcId&gt;</span>
+                <span style=color:#f92672>&lt;gwUsername&gt;</span>plc-01<span style=color:#f92672>&lt;/gwUsername&gt;</span>
+                <span style=color:#f92672>&lt;gwPassword&gt;</span>plc-01<span style=color:#f92672>&lt;/gwPassword&gt;</span>
+                <span style=color:#f92672>&lt;gwServerUrl&gt;</span>ws://localhost:8080/agent/websocket/strolch/plc
+                <span style=color:#f92672>&lt;/gwServerUrl&gt;</span>
+            <span style=color:#f92672>&lt;/Properties&gt;</span>
+        <span style=color:#f92672>&lt;/Component&gt;</span>
+    <span style=color:#f92672>&lt;/env&gt;</span>
+<span style=color:#f92672>&lt;/StrolchConfiguration&gt;</span>
+</code></pre></div><ol start=7><li>Now we add the custom classes we just declared.</li></ol><p><strong>PlcServiceInitializer</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> java.util.ArrayList<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.List<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> li.strolch.plc.example.services.*<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.agent.api.ComponentContainer<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcHandler<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcService<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcServiceInitializer<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CustomPlcServiceInitializer</span> <span style=color:#66d9ef>extends</span> PlcServiceInitializer <span style=color:#f92672>{</span>
+
+  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>CustomPlcServiceInitializer</span><span style=color:#f92672>(</span>ComponentContainer container<span style=color:#f92672>,</span> String componentName<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>container<span style=color:#f92672>,</span> componentName<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>protected</span> List<span style=color:#f92672>&lt;</span>PlcService<span style=color:#f92672>&gt;</span> <span style=color:#a6e22e>getPlcServices</span><span style=color:#f92672>(</span>PlcHandler plcHandler<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    ArrayList<span style=color:#f92672>&lt;</span>PlcService<span style=color:#f92672>&gt;</span> plcServices <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ArrayList<span style=color:#f92672>&lt;&gt;();</span>
+
+    StartupPlcService startupPlcService <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> StartupPlcService<span style=color:#f92672>(</span>plcHandler<span style=color:#f92672>);</span>
+    ConveyorPlcService conveyorPlcService <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> ConveyorPlcService<span style=color:#f92672>(</span>plcHandler<span style=color:#f92672>);</span>
+
+    plcServices<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>conveyorPlcService<span style=color:#f92672>);</span>
+    plcServices<span style=color:#f92672>.</span><span style=color:#a6e22e>add</span><span style=color:#f92672>(</span>startupPlcService<span style=color:#f92672>);</span>
+
+    <span style=color:#66d9ef>return</span> plcServices<span style=color:#f92672>;</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><strong>PlcPostInitializer</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> li.strolch.agent.api.ComponentContainer<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcPostInitializer<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CustomPostInitializer</span> <span style=color:#66d9ef>extends</span> PlcPostInitializer <span style=color:#f92672>{</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>CustomPostInitializer</span><span style=color:#f92672>(</span>ComponentContainer container<span style=color:#f92672>,</span> String componentName<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>container<span style=color:#f92672>,</span> componentName<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#75715e>// override the initialize(), start(), stop() and destroy() methods as needed
+</span><span style=color:#75715e></span><span style=color:#f92672>}</span>
+</code></pre></div><ol start=8><li>In the <code>CustomPlcServiceInitializer</code> we added two PlcServices, for which the
+code is missing. The following are simple examples:</li></ol><p><strong>StartupPlcService</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java><span style=color:#f92672>import</span> li.strolch.persistence.api.StrolchTransaction<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcHandler<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcService<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>StartupPlcService</span> <span style=color:#66d9ef>extends</span> PlcService <span style=color:#f92672>{</span>
+
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String PLC <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;PLC&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String STARTED <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Started&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String STOPPED <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Stopped&#34;</span><span style=color:#f92672>;</span>
+
+  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>StartupPlcService</span><span style=color:#f92672>(</span>PlcHandler plcHandler<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>plcHandler<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>start</span><span style=color:#f92672>(</span>StrolchTransaction tx<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    send<span style=color:#f92672>(</span>PLC<span style=color:#f92672>,</span> STARTED<span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>.</span><span style=color:#a6e22e>start</span><span style=color:#f92672>(</span>tx<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>stop</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    send<span style=color:#f92672>(</span>PLC<span style=color:#f92672>,</span> STOPPED<span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>.</span><span style=color:#a6e22e>stop</span><span style=color:#f92672>();</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p><strong>ConveyorPlcService</strong></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>
+
+<span style=color:#f92672>import</span> java.util.concurrent.ScheduledFuture<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> java.util.concurrent.TimeUnit<span style=color:#f92672>;</span>
+
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcHandler<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.core.PlcService<span style=color:#f92672>;</span>
+<span style=color:#f92672>import</span> li.strolch.plc.model.PlcAddress<span style=color:#f92672>;</span>
+
+<span style=color:#66d9ef>public</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ConveyorPlcService</span> <span style=color:#66d9ef>extends</span> PlcService <span style=color:#f92672>{</span>
+
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> <span style=color:#66d9ef>int</span> BOX_TRANSFER_DURATION <span style=color:#f92672>=</span> 30<span style=color:#f92672>;</span>
+
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String R_CONVEYOR_01 <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Conveyor01&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String A_START_BUTTON <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;StartButton&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String T_MOTOR_ON <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;MotorOn&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String T_MOTOR_OFF <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;MotorOff&#34;</span><span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>final</span> String A_BOX_DETECTED <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;BoxDetected&#34;</span><span style=color:#f92672>;</span>
+
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>boolean</span> motorOn<span style=color:#f92672>;</span>
+  <span style=color:#66d9ef>private</span> ScheduledFuture<span style=color:#f92672>&lt;?&gt;</span> motorStopTask<span style=color:#f92672>;</span>
+
+  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>ConveyorPlcService</span><span style=color:#f92672>(</span>PlcHandler plcHandler<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>(</span>plcHandler<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>handleNotification</span><span style=color:#f92672>(</span>PlcAddress address<span style=color:#f92672>,</span> Object value<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+    String resource <span style=color:#f92672>=</span> address<span style=color:#f92672>.</span><span style=color:#a6e22e>resource</span><span style=color:#f92672>;</span>
+    String action <span style=color:#f92672>=</span> address<span style=color:#f92672>.</span><span style=color:#a6e22e>action</span><span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(!</span>resource<span style=color:#f92672>.</span><span style=color:#a6e22e>equals</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Conveyor01&#34;</span><span style=color:#f92672>))</span>
+      <span style=color:#66d9ef>throw</span> <span style=color:#66d9ef>new</span> IllegalStateException<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Unexpected resource &#34;</span> <span style=color:#f92672>+</span> resource<span style=color:#f92672>);</span>
+
+    <span style=color:#66d9ef>boolean</span> active <span style=color:#f92672>=</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>boolean</span><span style=color:#f92672>)</span> value<span style=color:#f92672>;</span>
+
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>action<span style=color:#f92672>.</span><span style=color:#a6e22e>equals</span><span style=color:#f92672>(</span>A_START_BUTTON<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+
+      <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>active<span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        logger<span style=color:#f92672>.</span><span style=color:#a6e22e>info</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Start button pressed. Starting motors...&#34;</span><span style=color:#f92672>);</span>
+        send<span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> T_MOTOR_ON<span style=color:#f92672>);</span>
+        <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>motorOn</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span><span style=color:#f92672>;</span>
+        scheduleStopTask<span style=color:#f92672>();</span>
+      <span style=color:#f92672>}</span>
+
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>action<span style=color:#f92672>.</span><span style=color:#a6e22e>equals</span><span style=color:#f92672>(</span>A_BOX_DETECTED<span style=color:#f92672>))</span> <span style=color:#f92672>{</span>
+
+      <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span>active <span style=color:#f92672>&amp;&amp;</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>motorOn</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+        logger<span style=color:#f92672>.</span><span style=color:#a6e22e>info</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Container detected, refreshing stop task...&#34;</span><span style=color:#f92672>);</span>
+        scheduleStopTask<span style=color:#f92672>();</span>
+      <span style=color:#f92672>}</span>
+
+    <span style=color:#f92672>}</span> <span style=color:#66d9ef>else</span> <span style=color:#f92672>{</span>
+      logger<span style=color:#f92672>.</span><span style=color:#a6e22e>info</span><span style=color:#f92672>(</span><span style=color:#e6db74>&#34;Unhandled notification &#34;</span> <span style=color:#f92672>+</span> address<span style=color:#f92672>.</span><span style=color:#a6e22e>toKeyAddress</span><span style=color:#f92672>());</span>
+    <span style=color:#f92672>}</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>scheduleStopTask</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>motorStopTask</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span><span style=color:#f92672>)</span>
+      <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>motorStopTask</span><span style=color:#f92672>.</span><span style=color:#a6e22e>cancel</span><span style=color:#f92672>(</span><span style=color:#66d9ef>false</span><span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>motorStopTask</span> <span style=color:#f92672>=</span> schedule<span style=color:#f92672>(</span><span style=color:#66d9ef>this</span><span style=color:#f92672>::</span>stopMotor<span style=color:#f92672>,</span> BOX_TRANSFER_DURATION<span style=color:#f92672>,</span> TimeUnit<span style=color:#f92672>.</span><span style=color:#a6e22e>SECONDS</span><span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>stopMotor</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    send<span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> T_MOTOR_OFF<span style=color:#f92672>);</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>register</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>plcHandler</span><span style=color:#f92672>.</span><span style=color:#a6e22e>register</span><span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> A_START_BUTTON<span style=color:#f92672>,</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>plcHandler</span><span style=color:#f92672>.</span><span style=color:#a6e22e>register</span><span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> A_BOX_DETECTED<span style=color:#f92672>,</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>.</span><span style=color:#a6e22e>register</span><span style=color:#f92672>();</span>
+  <span style=color:#f92672>}</span>
+
+  <span style=color:#a6e22e>@Override</span>
+  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>unregister</span><span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>plcHandler</span><span style=color:#f92672>.</span><span style=color:#a6e22e>unregister</span><span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> A_START_BUTTON<span style=color:#f92672>,</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>.</span><span style=color:#a6e22e>plcHandler</span><span style=color:#f92672>.</span><span style=color:#a6e22e>unregister</span><span style=color:#f92672>(</span>R_CONVEYOR_01<span style=color:#f92672>,</span> A_BOX_DETECTED<span style=color:#f92672>,</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>);</span>
+    <span style=color:#66d9ef>super</span><span style=color:#f92672>.</span><span style=color:#a6e22e>unregister</span><span style=color:#f92672>();</span>
+  <span style=color:#f92672>}</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><ol start=9><li><p>Now the last part is to add the model, i.e. PlcConnections, PlcAddresses and
+PlcTelegrams. To have less configuration files and make it easier to
+reconfigure at runtime, this data is stored in normal Strolch <code>Resources</code>.</p><p>In this example we will use simple Raspberry Pi GPIOs. For convenience, and
+also when sharing I/O definitions with external partners, it is easier to use
+a CSV file to define the I/Os and then use the <code>PlcAddressGenerator</code> to
+generate and validate the model.</p><p>For this purpose in this example, we will use one conveyor with 2 inputs and
+1 output. The CSV file should have the following content:</p></li></ol><pre><code class=language-csv data-lang=csv>Description,Type,SubType,Device,Pin,Resource,Action1,Action2,Connection,DeviceId
+Material Flow,Group,,,,,,,,MaterialFlow
+Conveyor 1,Input,Pin,,4,Conveyor,Occupied,,raspiBcmGpioInput
+Conveyor 1,Input,Pin,,17,Conveyor,BoxDetected,,raspiBcmGpioInput
+Conveyor 1,Output,Pin,,18,Conveyor,MotorOn,MotorOff,raspiBcmGpioOutput
+</code></pre><p>The CSV headers are as follows:</p><ul><li>Description → a simple description for this PlcAddress</li><li>Type →<ul><li>Group → Must be the first line and generates a PlcLogicalDevice, all
+succeeding lines are grouped to this device. Add additional to group
+further devices</li><li>Input → defines a boolean input</li><li>Output → defines a boolean output</li><li>Virtual → defines a virtual address which has no corresponding hardware
+connection. Used for internal communication.</li><li>DataLogicScanner → defines an address to read barcodes from a DataLogic
+Scanner. The actions must be left empty as the keys Barcode (address), On
+and Off (telegrams) will be generated.</li></ul></li><li>SubType →</li><li>For Input and Output types →<ul><li>DevPin, DevPin0 → Generates the address as <code>&lt;Connection>.&lt;Device>.&lt;Pin></code>.
+DevPin0 decrements the Device and Pin values by one.</li><li>Pin → Generates the address as <code>&lt;Connection>.&lt;Pin></code>.</li></ul></li><li>For Virtual types →<ul><li>Boolean</li><li>String</li></ul></li><li>Device → Device number</li><li>Pin → The pin number on the device</li><li>Resource → The resource ID with which to notify the agent</li><li>Action1 → The action ID</li><li>Action2 → The second action ID if required</li><li>Connection → The ID of the PlcConnection with which this I/O is attached</li><li>DeviceId → For type Group: Set the ID of this PlcLogicalDevice being generated</li></ul><p>When you use this file as input for the <code>PlcAddressGenerator</code>, then it will
+generate PlcLogicalDevice, PlcAddress and PlcTelegram elements:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;StrolchModel&gt;</span>
+    <span style=color:#f92672>&lt;Resource</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;D_MaterialFlow&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;MaterialFlow&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;PlcLogicalDevice&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;parameters&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Parameters&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Parameters&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;description&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Description&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Material Flow&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;group&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Group&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;01 Material Flow&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;index&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Index&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Integer&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;10&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;relations&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Relations&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Relations&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;addresses&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Addresses&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;StringList&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Resource-Ref&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;PlcAddress&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;A_Conveyor-Occupied, A_Conveyor-BoxDetected, A_Conveyor-MotorOn&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;telegrams&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Telegrams&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;StringList&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Resource-Ref&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;PlcTelegram&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;T_Conveyor-MotorOn, T_Conveyor-MotorOff&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+    <span style=color:#f92672>&lt;/Resource&gt;</span>
+
+    <span style=color:#f92672>&lt;Resource</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;A_Conveyor-Occupied&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Conveyor - Occupied&#34;</span>
+              <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;PlcAddress&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;parameters&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Parameters&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Parameters&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;description&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Description&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;5&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Conveyor 1&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;address&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;HW Address&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;PlcConnection&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;10&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;raspiBcmGpioInput.4&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;resource&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Resource ID for PlcAddress&#34;</span>
+                       <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;20&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Conveyor&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;action&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Action ID for PlcAddress&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;30&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Occupied&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;index&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Index&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Integer&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;40&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;10&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;value&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Value&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Boolean&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;100&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+    <span style=color:#f92672>&lt;/Resource&gt;</span>
+
+    <span style=color:#f92672>&lt;Resource</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;T_Conveyor-MotorOn&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Conveyor - MotorOn&#34;</span>
+              <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;PlcTelegram&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;parameters&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Parameters&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Parameters&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;description&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Description&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;5&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Conveyor 1&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;address&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;HW Address&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;PlcConnection&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;10&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;raspiBcmGpioOutput.18&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;resource&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Resource ID for PlcAddress&#34;</span>
+                       <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;20&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Conveyor&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;action&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Action ID for PlcAddress&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;30&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;MotorOn&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;index&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Index&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Integer&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;40&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;10&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;value&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Value&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Boolean&#34;</span> <span style=color:#a6e22e>Index=</span><span style=color:#e6db74>&#34;100&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;true&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+    <span style=color:#f92672>&lt;/Resource&gt;</span>
+<span style=color:#f92672>&lt;/StrolchModel&gt;</span>
+</code></pre></div><p>The PlcLogicalDevice references the PlcAddress and PlcTelegram objects, and is
+then used in the UI for grouping.</p><p>The PlcAddress is used to store the current value and defines the keys with
+which the agent will be notified</p><p>The PlcTelegram is used to store default values to send, for specific keys. E.g.
+The action <code>On</code> would send true, and <code>Off</code> would send false. This is semantics, and
+is defined in each project depending on the hardware.</p><ol start=10><li><p>Copy the
+file <a href=https://github.com/4treesCH/strolch-plc/blob/develop/example/plc-state.xml>plc-state.xml</a>
+to your runtime and reference it by use of
+a <code>&lt;IncludeFile file="plc-state.xml" /></code> element. Modify the <code>PlcId</code> to be the
+same as the one you defined in the <code>StrolchConfiguration.xml</code>.</p></li><li><p>Now that we have a model, the <code>PlcConnections</code> are to be defined. In the
+previous example we used a Raspberry Pi&rsquo;s GPIOs. This needs to be defined as
+a <code>PlcConnection</code>:</p></li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml>
+<span style=color:#f92672>&lt;StrolchModel&gt;</span>
+    <span style=color:#f92672>&lt;Resource</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;raspiBcmGpioOutput&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Raspi BCM GPIO Output&#34;</span>
+              <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;PlcConnection&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;parameters&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Parameters&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Parameters&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;className&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection Class&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;li.strolch.plc.core.hw.gpio.RaspiBcmGpioOutputConnection&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;state&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection State&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Enumeration&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;ConnectionState&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Disconnected&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;stateMsg&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection State Msg&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Enumeration&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;ConnectionState&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;inverted&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Inverted&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Boolean&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;false&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;bcmOutputPins&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;BCM Output Pins&#34;</span>
+                       <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;IntegerList&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;27&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+    <span style=color:#f92672>&lt;/Resource&gt;</span>
+    <span style=color:#f92672>&lt;Resource</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;raspiBcmGpioInput&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Raspi BCM GPIO Input&#34;</span>
+              <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;PlcConnection&#34;</span><span style=color:#f92672>&gt;</span>
+        <span style=color:#f92672>&lt;ParameterBag</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;parameters&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Parameters&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Parameters&#34;</span><span style=color:#f92672>&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;className&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection Class&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;li.strolch.plc.core.hw.gpio.RaspiBcmGpioInputConnection&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;state&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection State&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Enumeration&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;ConnectionState&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;Disconnected&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;stateMsg&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Connection State Msg&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;String&#34;</span>
+                       <span style=color:#a6e22e>Interpretation=</span><span style=color:#e6db74>&#34;Enumeration&#34;</span> <span style=color:#a6e22e>Uom=</span><span style=color:#e6db74>&#34;ConnectionState&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;inverted&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;Inverted&#34;</span> <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;Boolean&#34;</span>
+                       <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;true&#34;</span><span style=color:#f92672>/&gt;</span>
+            <span style=color:#f92672>&lt;Parameter</span> <span style=color:#a6e22e>Id=</span><span style=color:#e6db74>&#34;bcmInputPins&#34;</span> <span style=color:#a6e22e>Name=</span><span style=color:#e6db74>&#34;BCM Input Pins&#34;</span>
+                       <span style=color:#a6e22e>Type=</span><span style=color:#e6db74>&#34;IntegerList&#34;</span> <span style=color:#a6e22e>Value=</span><span style=color:#e6db74>&#34;4&#34;</span><span style=color:#f92672>/&gt;</span>
+        <span style=color:#f92672>&lt;/ParameterBag&gt;</span>
+    <span style=color:#f92672>&lt;/Resource&gt;</span>
+<span style=color:#f92672>&lt;/StrolchModel&gt;</span>
+</code></pre></div><p>See <a href=https://github.com/4treesCH/strolch-plc/blob/develop/example/strolch-plc-example-connections.xml>strolch-plc-example-connections.xml</a> for further examples.</p><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=/plc/architecture/ title=Architecture><i class="fa fa-chevron-left"></i></a><a class="nav nav-next" href=/tutorial/ title=Tutorial style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1626028660></script><script src=/js/perfect-scrollbar.min.js?1626028660></script><script src=/js/perfect-scrollbar.jquery.min.js?1626028660></script><script src=/js/jquery.sticky.js?1626028660></script><script src=/js/featherlight.min.js?1626028660></script><script src=/js/highlight.pack.js?1626028660></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/modernizr.custom-3.6.0.js?1626028660></script><script src=/js/learn.js?1626028660></script><script src=/js/hugo-learn.js?1626028660></script><script src=/mermaid/mermaid.js?1626028660></script><script>mermaid.initialize({startOnLoad:true});</script></body></html>
