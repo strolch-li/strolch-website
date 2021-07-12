@@ -2,7 +2,7 @@ baseURL = "https://strolch.li/"
 languageCode = "en-us"
 title = "Strolch"
 theme = "hugo-theme-learn"
-publishDir = "public"
+publishDir = "docs"
 
 refLinksErrorLevel = "WARNING"
 

@@ -27,7 +27,7 @@ jobs:
           git config --global user.email "dev@strolch.li"
           git config --global user.name "Strolch GitHub Actions Build"
           git status
-          git add public/
+          git add docs/
           git commit -am "[AUTO] New version of website"
           git push origin HEAD:develop
           
