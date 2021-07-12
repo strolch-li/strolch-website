@@ -17,7 +17,7 @@ Of course using the Java language as a PLC has its limitations, we have manage
 to use it for customers and are satisfied with the result. What follows is a
 description in how to set up your own Strolch based PLC.
 
-Checkout the code at [GitHub](https://github.com/4treesCH/strolch-plc)
+Checkout the code at [GitHub](https://github.com/strolch-li/strolch-plc)
 
 Currently, we have the following topics of discussion:
 

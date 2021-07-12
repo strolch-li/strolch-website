@@ -216,7 +216,7 @@ try (StrolchTransaction tx = runtimeMock.openUserTx(certificate, true)) {
 ```
 
 {{% notice tip %}}
-Note: Checkout [example-model.xml](https://github.com/4treesCH/strolch/blob/develop/li.strolch.service/src/test/resources/transienttest/data/example-model.xml "{target='_blank'}") and [SimpleModelTest.java](https://github.com/4treesCH/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/service/SimpleModelTest.java "{target='_blank'}") for these examples.
+Note: Checkout [example-model.xml](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/resources/transienttest/data/example-model.xml "{target='_blank'}") and [SimpleModelTest.java](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/service/SimpleModelTest.java "{target='_blank'}") for these examples.
 {{% /notice %}}
 
 {{% notice tip %}}

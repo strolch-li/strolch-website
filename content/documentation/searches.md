@@ -41,13 +41,13 @@ clauses. Either
 
 When extending the class, then the search expressions are available as methods
 on the super class, otherwise you can statically import them from
-[ExpressionsSupport](https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/ExpressionsSupport.java)
+[ExpressionsSupport](https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/ExpressionsSupport.java)
 .
 
 And of course a where clause needs operators, which are called search
 predicates. Just as search expressions are available in sub classes, so are
 search predicates and can also be statically imported through
-[PredicatesSupport](https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/PredicatesSupport.java)
+[PredicatesSupport](https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/PredicatesSupport.java)
 .
 
 Examples of search expressions with search predicates follow:
@@ -82,7 +82,7 @@ personSearch.where(person -> person.getName().length() == 3);
 ```
 
 See
-the [StrolchSearchTest](https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/test/java/li/strolch/search/StrolchSearchTest.java)
+the [StrolchSearchTest](https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/test/java/li/strolch/search/StrolchSearchTest.java)
 for many ways in which you can implement tests.
 
 {{% notice tip %}} Note that strolch searches requires privileges, thus when you

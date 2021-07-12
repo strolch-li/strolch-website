@@ -22,7 +22,7 @@ The book store will have the following features:
 * Notify the user when the order is sent
 
 The code to the book can be downloaded
-from [GitHub](https://github.com/4treesCH/strolch-bookshop) and will be updated
+from [GitHub](https://github.com/strolch-li/strolch-bookshop) and will be updated
 as this tutorial is updated.
 
 The tutorial consists of the following parts:

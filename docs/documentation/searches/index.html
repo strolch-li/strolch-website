@@ -17,11 +17,11 @@ clauses. Either</p><ul><li>override the <code>define()</code>-method in your sub
 calling the <code>where()</code> method, or</li><li>define special methods on the class e.g. <code>byColor()</code> which also calls the
 <code>where()</code>-method to add a search expression, or</li><li>directly call the <code>where()</code>-method after instantiating a search.</li></ul><p>When extending the class, then the search expressions are available as methods
 on the super class, otherwise you can statically import them from
-<a href=https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/ExpressionsSupport.java>ExpressionsSupport</a>
+<a href=https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/ExpressionsSupport.java>ExpressionsSupport</a>
 .</p><p>And of course a where clause needs operators, which are called search
 predicates. Just as search expressions are available in sub classes, so are
 search predicates and can also be statically imported through
-<a href=https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/PredicatesSupport.java>PredicatesSupport</a>
+<a href=https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/main/java/li/strolch/search/PredicatesSupport.java>PredicatesSupport</a>
 .</p><p>Examples of search expressions with search predicates follow:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>ResourceSearch search<span style=color:#f92672>=</span><span style=color:#66d9ef>new</span> ResourceSearch<span style=color:#f92672>();</span>
 
 <span style=color:#75715e>// predicate either as parameter, or chained
@@ -42,7 +42,7 @@ search<span style=color:#f92672>.</span><span style=color:#a6e22e>where</span><s
 parameter to the expression.</p><p>In addition to using predefined search search expressions, one can also just
 pass a lambda expression which performs a custom filter:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-java data-lang=java>personSearch<span style=color:#f92672>.</span><span style=color:#a6e22e>where</span><span style=color:#f92672>(</span>person <span style=color:#f92672>-&gt;</span> person<span style=color:#f92672>.</span><span style=color:#a6e22e>getName</span><span style=color:#f92672>().</span><span style=color:#a6e22e>length</span><span style=color:#f92672>()</span> <span style=color:#f92672>==</span> 3<span style=color:#f92672>);</span>
 </code></pre></div><p>See
-the <a href=https://github.com/4treesCH/strolch/blob/develop/li.strolch.agent/src/test/java/li/strolch/search/StrolchSearchTest.java>StrolchSearchTest</a>
+the <a href=https://github.com/strolch-li/strolch/blob/develop/li.strolch.agent/src/test/java/li/strolch/search/StrolchSearchTest.java>StrolchSearchTest</a>
 for many ways in which you can implement tests.</p><div class="notices tip"><p>Note that strolch searches requires privileges, thus when you
 use a strolch search, add it to the role of the user in <code>PrivilegeRoles.xml</code>:</p></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml>
 <span style=color:#f92672>&lt;Privilege</span> <span style=color:#a6e22e>name=</span><span style=color:#e6db74>&#34;li.strolch.search.StrolchSearch&#34;</span> <span style=color:#a6e22e>policy=</span><span style=color:#e6db74>&#34;DefaultPrivilege&#34;</span><span style=color:#f92672>&gt;</span>

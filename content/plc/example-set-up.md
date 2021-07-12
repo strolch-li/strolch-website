@@ -65,7 +65,7 @@ business logic and the PLC controls the I/Os.
 </project>
 ```
 
-3. Add a bower dependency: `"strolch-wc-plc": "4treesCH/strolch-wc-plc#^0.3.4"`
+3. Add a bower dependency: `"strolch-wc-plc": "strolch-li/strolch-wc-plc#^0.3.4"`
    to `src/main/webapp/bower.json`
 
    After adding the dependency, run `gulp` in the webapp directory. Gulp should
@@ -485,7 +485,7 @@ The action `On` would send true, and `Off` would send false. This is semantics, 
 is defined in each project depending on the hardware.
 
 10. Copy the
-    file [plc-state.xml](https://github.com/4treesCH/strolch-plc/blob/develop/example/plc-state.xml)
+    file [plc-state.xml](https://github.com/strolch-li/strolch-plc/blob/develop/example/plc-state.xml)
     to your runtime and reference it by use of
     a `<IncludeFile file="plc-state.xml" />` element. Modify the `PlcId` to be the
     same as the one you defined in the `StrolchConfiguration.xml`. 
@@ -534,6 +534,6 @@ is defined in each project depending on the hardware.
 </StrolchModel>
 ```
 
-See [strolch-plc-example-connections.xml](https://github.com/4treesCH/strolch-plc/blob/develop/example/strolch-plc-example-connections.xml) for further examples. 
+See [strolch-plc-example-connections.xml](https://github.com/strolch-li/strolch-plc/blob/develop/example/strolch-plc-example-connections.xml) for further examples. 
 
 

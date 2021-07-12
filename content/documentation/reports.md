@@ -305,5 +305,5 @@ List<JsonObject> result = new Report(tx, "stockReport") //
 ```
 
 {{% notice tip %}}
-Note: See the [GenericReportTest](https://github.com/4treesCH/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/report/GenericReportTest.java) for examples.
+Note: See the [GenericReportTest](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/report/GenericReportTest.java) for examples.
 {{% /notice %}}

@@ -13,7 +13,7 @@ To start developing Strolch you need an installed:
 Setting up Strolch is just a few lines:
 
 ```shell
-git clone https://github.com/4treesCH/strolch.git
+git clone https://github.com/strolch-li/strolch.git
 cd strolch
 mvn clean install -DskipTests
 ```
