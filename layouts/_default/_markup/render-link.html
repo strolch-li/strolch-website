@@ -11,6 +11,9 @@
    {{- printf " %s=%q" $k $v | safeHTMLAttr -}}
 {{- end -}}
 {{- end -}}
+{{ if gt (strings.Count "http" (.Destination | safeURL)) 0}}
+ target="_blank"
+{{ end }}
 >{{ .Text | safeHTML }}</a>
 
 {{- /* Strip trailing space. */ -}}

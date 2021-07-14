@@ -10,7 +10,11 @@ To start developing Strolch you need an installed:
 
 ## Building Strolch
 
-Setting up Strolch is just a few lines:
+{{% notice tip %}} Note: You don't have to build Strolch if you want to use the
+version on Maven central, but if you need a snapshot version, or the release you
+want isn't on central, then go ahead and build Strolch. {{% /notice %}}
+
+Building Strolch is just a few lines:
 
 ```shell
 git clone https://github.com/strolch-li/strolch.git
@@ -18,7 +22,7 @@ cd strolch
 mvn clean install -DskipTests
 ```
 
-{{% notice tip %}}
+{{% notice warning %}}
 Note: To run the tests you will need to configure the PostgreSQL Databases. See
 the README in the module.
 {{% /notice %}}
@@ -28,6 +32,20 @@ projects. Now you can start modifying the projects, and add your own features,
 or, far more interesting, start developing your projects using the Strolch
 agent.
 
+## Converting an existing application
+
+You can convert an existing application to a Strolch agent, but this might be a
+bit daunting in the beginning. If you are planning on doing this, first create a
+test application using the maven archetypes, so that you can get a feel for the configuration.
+
+Once that works, use the archetypes configuration to reconfigure your project to start as a Strolch agent.
+
+{{% notice warning %}}
+Note: Beware to select the archetype pertaining to your use case:
+  * For a web app use the [li.strolch.mvn.archetype.webapp](/development/#creating-a-java-strolch-web-app)
+  * For a application with a main method use [li.strolch.mvn.archetype.main](/development/#creating-a-simple-java-strolch-app)
+{{% /notice %}}
+
 ## Creating a Strolch App
 
 To create your own Strolch App, you can use Maven's archetype generation. There
@@ -35,7 +53,7 @@ are two versions, one is a simple Java App which you can use to directly access
 the Strolch runtime, and the second is to create a Java Web App, which is the
 usual way to run Strolch runtimes.
 
-{{% notice tip %}}
+{{% notice warning %}}
 Note: you need to have installed Strolch to your local maven repo, otherwise the
 archetype won't be available. 
 {{% /notice %}}
@@ -43,6 +61,10 @@ archetype won't be available.
 ### Creating a Java Strolch Web App
 
 The following shows the maven command to create the new maven project. Note that you should replace the placeholders in the brackets:
+
+{{% notice tip %}}
+The code is also available on [GitHub](https://github.com/strolch-li/strolch/tree/develop/li.strolch.mvn.archetype.webapp).
+{{% /notice %}}
 
 ```shell
 mvn archetype:generate \
@@ -70,7 +92,7 @@ npm install
 gulp
 ```
 
-{{% notice tip %}} Note: Whenever the bower.json is changed then you should
+{{% notice warning %}} Note: Whenever the bower.json is changed then you should
 again call npm install inside the webapp folder. {{% /notice %}}
 
 #### Building the WAR
@@ -88,6 +110,10 @@ Happy coding =))
 
 The following shows the maven command to create the new maven project. Note that
 you should replace the placeholders in the brackets:
+
+{{% notice tip %}}
+The code is also available on [GitHub](https://github.com/strolch-li/strolch/tree/develop/li.strolch.mvn.archetype.main).
+{{% /notice %}}
 
 ```shell
 mvn archetype:generate \
@@ -120,8 +146,7 @@ Happy coding =))
 
 The following tools are used to develop Strolch and Strolch-based projects: 
 
-* [IntelliJ](https://www.jetbrains.com/idea/download/#section=linux "{target='_blank'}")
-* [Apache Maven](https://maven.apache.org/ "{target='_blank'}")
-* [Git SCM](http://git-scm.com/ "{target='_blank'}")
-
+* [IntelliJ](https://www.jetbrains.com/idea/download/#section=linux)
+* [Apache Maven](https://maven.apache.org/)
+* [Git SCM](http://git-scm.com/)
 

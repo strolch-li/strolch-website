@@ -216,11 +216,11 @@ try (StrolchTransaction tx = runtimeMock.openUserTx(certificate, true)) {
 ```
 
 {{% notice tip %}}
-Note: Checkout [example-model.xml](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/resources/transienttest/data/example-model.xml "{target='_blank'}") and [SimpleModelTest.java](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/service/SimpleModelTest.java "{target='_blank'}") for these examples.
+Note: Checkout [example-model.xml](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/resources/transienttest/data/example-model.xml) and [SimpleModelTest.java](https://github.com/strolch-li/strolch/blob/develop/li.strolch.service/src/test/java/li/strolch/service/SimpleModelTest.java) for these examples.
 {{% /notice %}}
 
 {{% notice tip %}}
-There is an XML Schema which defines the model in XML: [StrolchModel-1.6.xsd](/assets/xsd/StrolchModel-1.6.xsd "{target='_blank'}")
+There is an XML Schema which defines the model in XML: [StrolchModel-1.6.xsd](/xsd/StrolchModel-1.6.xsd "{target='_blank'}")
 {{% /notice %}}
 
 Here is an example of all the possible elements in Strolch:
@@ -233,7 +233,7 @@ xsi:schemaLocation="https://strolch.li/xsd/StrolchModel-1.6.xsd StrolchModel-1.6
   <IncludeFile file="Include1.xml"/>
 
   <Order Id="@test1" Name="Test Order" Type="Order">
-    <Version Version="0" CreatedBy="test" CreatedAt="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
+    <Version Version="0" CreatedBy="test" Created="2012-11-30T18:12:05.628+01:00" UpdatedBy="test" Updated="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
     <ParameterBag Id="@bag01" Name="Test Bag" Type="TestBag">
       <Parameter Id="@param1" Name="Boolean Param" Type="Boolean" Value="true"/>
     </ParameterBag>
@@ -247,7 +247,7 @@ xsi:schemaLocation="https://strolch.li/xsd/StrolchModel-1.6.xsd StrolchModel-1.6
   </Order>
 
   <Resource Id="MyTestResource" Name="Test Name" Type="TestType">
-    <Version Version="0" CreatedBy="test" CreatedAt="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
+    <Version Version="0" CreatedBy="test" Created="2012-11-30T18:12:05.628+01:00" UpdatedBy="test" Updated="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
     <ParameterBag Id="@bag01" Name="Test Bag 01" Type="TestBag">
       <Parameter Id="@param1" Name="Boolean Param" Type="Boolean" Value="true"/>
     </ParameterBag>
@@ -264,7 +264,7 @@ xsi:schemaLocation="https://strolch.li/xsd/StrolchModel-1.6.xsd StrolchModel-1.6
   </Resource>
 
   <Activity Id="activity_1" Name="Activity" Type="parentType" TimeOrdering="Series">
-    <Version Version="0" CreatedBy="test" CreatedAt="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
+    <Version Version="0" CreatedBy="test" Created="2012-11-30T18:12:05.628+01:00" UpdatedBy="test" Updated="2012-11-30T18:12:05.628+01:00" Deleted="false"/>
     <ParameterBag Id="@bag01" Name="Test Bag" Type="TestBag">
       <Parameter Id="@param1" Name="Boolean Param" Type="Boolean" Value="true"/>
     </ParameterBag>
