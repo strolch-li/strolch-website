@@ -41,7 +41,11 @@
         <ul>
           {{ range sort . "Weight"}}
               <li>
-                  {{.Pre}}<a class="padding" href="{{.URL | absLangURL }}">{{safeHTML .Name}}</a>{{.Post}}
+                  {{ if gt (strings.Count "http" .URL) 0}}
+                    {{.Pre}}<a class="padding" href="{{.URL | absLangURL }}" target="_blank">{{safeHTML .Name}}</a>{{.Post}}
+                  {{ else }}
+                    {{.Pre}}<a class="padding" href="{{.URL | absLangURL }}">{{safeHTML .Name}}</a>{{.Post}}
+                  {{ end }}
               </li>
           {{end}}
         </ul>
