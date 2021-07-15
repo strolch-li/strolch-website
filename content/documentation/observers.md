@@ -40,23 +40,29 @@ Registering for updates is done by registering an Observer on the
 ObserverHandler of the realm itself:
 
 ```java
-ObserverHandler observerHandler = container.getRealm(StrolchConstants.DEFAULT_REALM).getObserverHandler();
-observerHandler.registerObserver(Tags.RESOURCE, new Observer() {
+public class Example {
+	public static void main(String[] args) {
 
-  @Override
-  public void update(String key, List<StrolchRootElement> elements) {
-    logger.info(elements.size() + " resources were updated!");
-  }
+		ObserverHandler observerHandler = container
+				.getRealm(StrolchConstants.DEFAULT_REALM).getObserverHandler();
+		observerHandler.registerObserver(Tags.RESOURCE, new Observer() {
 
-  @Override
-  public void remove(String key, List<StrolchRootElement> elements) {
-    logger.info(elements.size() + " resources were removed!");
-  }
+			@Override
+			public void update(String key, List<StrolchRootElement> elements) {
+				logger.info(elements.size() + " resources were updated!");
+			}
 
-  @Override
-  public void add(String key, List<StrolchRootElement> elements) {
-    logger.info(elements.size() + " resources were added!");
-  }
-});
+			@Override
+			public void remove(String key, List<StrolchRootElement> elements) {
+				logger.info(elements.size() + " resources were removed!");
+			}
+
+			@Override
+			public void add(String key, List<StrolchRootElement> elements) {
+				logger.info(elements.size() + " resources were added!");
+			}
+		});
+	}
+}
 ```
 
