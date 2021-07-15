@@ -131,7 +131,6 @@ You change into the directory of the new project and then build the project by c
 ```shell
 cd <my-artifactId>
 mvn clean package
-
 ```
 
 Start the program using:

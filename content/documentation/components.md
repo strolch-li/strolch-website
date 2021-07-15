@@ -44,6 +44,8 @@ registered in the `StrolchConfiguration.xml` file with a
 The dependencies is an important feature as the dependencies of a component 
 are always started before the actual component.
 
+## Example Component implementation and configuration
+
 By example of the `MailHandler` we shall show how a strolch component would 
 be implemented.
 
@@ -58,7 +60,7 @@ Then implement a concrete `MailHandler`:
 ```java
 public class SmtpMailHandler extends StrolchComponent implements MailHandler {
 
-  // instance fields with configuration properties to send the mail
+  // TODO instance fields with configuration properties to send the mail
 
   public SmtpMailHandler(ComponentContainer container, String componentName) {
     super(container, componentName);
@@ -67,7 +69,7 @@ public class SmtpMailHandler extends StrolchComponent implements MailHandler {
   @Override
   public void initialize(ComponentConfiguration configuration) throws Exception {
 
-    // store any properties needed from the configuration
+    // TODO store any properties needed from the configuration
 
     super.initialize(configuration);
   }
@@ -75,7 +77,7 @@ public class SmtpMailHandler extends StrolchComponent implements MailHandler {
   @Override
   public void sendMail(String subject, String text, String recipient) {
 
-    // send the e-mail using SMTP, or store in stack to send by thread
+    // TODO send the e-mail using SMTP, or send asynchronously
   }
 }
 ```
@@ -107,7 +109,12 @@ element:
 Now when the agent is started, the component can be retrieved and used. 
 E.g from inside a Service:
 ```java
-MailHandler mailHandler = getComponent(MailHandler.class);
-mailHandler.sendMail("My Subject", "Hello World", "test@test.ch");
+public class MyService extends AbstractService<ServiceArgument, ServiceResult> {
+	@Override
+	protected ServiceResult internalDoService(ServiceArgument arg) throws Exception {
+		MailHandler mailHandler = getComponent(MailHandler.class);
+		mailHandler.sendMail("My Subject", "Hello World", "test@test.ch");
+    }
+}
 ```
 
