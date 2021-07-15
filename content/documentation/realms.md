@@ -28,8 +28,8 @@ however need to configure the realms for their specific project. If the
 project only requires one realm, then the `defaultRealm` can be used, where the 
 developer only is required to configure the mode and any relevant model file.
 
-If the mode is `CACHED`, then the `PersistenceHandler` component is required to be 
-configured, so that the DAOs know how to access the underlying database.
+If the mode is `CACHED`, then the `PersistenceHandler` component is required to
+be configured, so that the DAOs know how to access the underlying database.
 
 The configuration in the `StrolchConfiguration.xml` file is as follows:
 
@@ -45,7 +45,8 @@ The configuration in the `StrolchConfiguration.xml` file is as follows:
       <!-- if CACHED: -->
       <!--depends>PersistenceHandler</depends-->
       <Properties>
-        <dataStoreMode>EMPTY|TRANSIENT|CACHED</dataStoreMode>
+        <!-- one of EMPTY, TRANSIENT, CACHED-->
+        <dataStoreMode>TRANSIENT</dataStoreMode>
         <dataStoreFile>StrolchModel.xml</dataStoreFile>
       </Properties>
     </Component>
@@ -109,10 +110,13 @@ Opening a transaction is done from a `Service` by calling one of the
 `openTx()`-methods. Nevertheless, the realm can be accessed as follows:
 
 ```java
-ComponentContainer container = getAgent().getContainer();
-StrolchRealm realm = container.getRealm(StrolchConstants.DEFAULT_REALM);
-try(StrolchTransaction tx = realm.openTx()) {
-  Resource resource = tx.getResourceBy("TestType", "MyTestResource");
-  ...
+public class Example {
+  public static void main(String[] args) {
+    ComponentContainer container = getAgent().getContainer();
+    StrolchRealm realm = container.getRealm(StrolchConstants.DEFAULT_REALM);
+    try (StrolchTransaction tx = realm.openTx()) {
+      Resource resource = tx.getResourceBy("TestType", "MyTestResource");
+    }
+  }
 }
 ```

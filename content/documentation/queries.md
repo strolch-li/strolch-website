@@ -5,7 +5,7 @@ weight: 89
 
 ## Queries
 {{% notice warning %}}
-The Query API is deprecated and the search API should be used instead.
+The Query API is deprecated and the [search API](/documentation/searches) should be used instead.
 {{% /notice %}}
 
 As is custom for every framework, querying the model must be possible. Strolch
