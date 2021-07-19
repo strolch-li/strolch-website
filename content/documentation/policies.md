@@ -90,12 +90,10 @@ public class MyService extends AbstractService<ServiceArgument, ServiceResult> {
 		try (StrolchTransaction tx = openArgOrUserTx(arg)) {
 			Resource res = tx.getResourceBy("MyType", "myTestResource");
 
-			PolicyDef planningPolicyDef = res.getPolicyDef(PlanningPolicy.class);
-			PlanningPolicy planningPolicy = tx.getPolicy(PlanningPolicy.class, planningPolicyDef);
+			PlanningPolicy planningPolicy = tx.getPolicy(res, PlanningPolicy.class);
 			planningPolicy.plan(...);
 
-			PolicyDef executionPolicyDef = res.getPolicyDef(ExecutionPolicy.class);
-			ExecutionPolicy executionPolicy = tx.getPolicy(ExecutionPolicy.class, executionPolicyDef);
+			ExecutionPolicy executionPolicy = tx.getPolicy(res, ExecutionPolicy.class);
 			executionPolicy.toExecution(...);
 
 			tx.commitOnClose();
