@@ -91,11 +91,11 @@ public class MyService extends AbstractService<ServiceArgument, ServiceResult> {
 			Resource res = tx.getResourceBy("MyType", "myTestResource");
 
 			PolicyDef planningPolicyDef = res.getPolicyDef(PlanningPolicy.class);
-			PlanningPolicy planningPolicy = tx.getPolicy(planningPolicyDef);
+			PlanningPolicy planningPolicy = tx.getPolicy(PlanningPolicy.class, planningPolicyDef);
 			planningPolicy.plan(...);
 
 			PolicyDef executionPolicyDef = res.getPolicyDef(ExecutionPolicy.class);
-			ExecutionPolicy executionPolicy = tx.getPolicy(executionPolicyDef);
+			ExecutionPolicy executionPolicy = tx.getPolicy(ExecutionPolicy.class, executionPolicyDef);
 			executionPolicy.toExecution(...);
 
 			tx.commitOnClose();
