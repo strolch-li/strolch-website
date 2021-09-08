@@ -26,7 +26,7 @@ business logic and the PLC controls the I/Os.
 ```xml
 <project>
     <properties>
-      <strolch.version>1.6.0-SNAPSHOT</strolch.version>
+      <strolch.version>1.7.0-SNAPSHOT</strolch.version>
       <strolch.plc.version>0.1.0-SNAPSHOT</strolch.plc.version>
     </properties>
     

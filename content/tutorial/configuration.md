@@ -54,7 +54,7 @@ just show you a working POM file:
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
 
-        <strolch.version>1.6.0-SNAPSHOT</strolch.version>
+        <strolch.version>1.7.0-SNAPSHOT</strolch.version>
 
         <warFinalName>bookshop</warFinalName>
         <m2eclipse.wtp.contextRoot>${warFinalName}</m2eclipse.wtp.contextRoot>
