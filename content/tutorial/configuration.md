@@ -37,7 +37,7 @@ just show you a working POM file:
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <petitparser.version>2.1.0</petitparser.version>
-        <hikaricp.version>2.7.1</hikaricp.version>
+        <hikaricp.version>4.0.3</hikaricp.version>
         <postgresql.version>42.1.4</postgresql.version>
         <gson.version>2.8.2</gson.version>
         <annotation.version>1.3.1</annotation.version>
