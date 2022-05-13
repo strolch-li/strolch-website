@@ -77,7 +77,6 @@ cd src/main/webapp/
 npm install bower -g
 npm install gulp -g
 npm install
-bower install
 gulp
 cd ../../..
 ```
