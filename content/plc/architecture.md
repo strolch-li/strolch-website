@@ -11,7 +11,7 @@ weight: 50
 
 The Strolch PLC architecture sees the Strolch Agent as the server, managing
 logical devices, i.e. multiple sensors and actors together and thus deciding on
-further steps. With this architecture multiple PLCs can be combined together in
+further steps. With this architecture multiple PLCs can be combined in
 one agent for flow control.
 
 ### PLC Architecture

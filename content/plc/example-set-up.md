@@ -26,8 +26,8 @@ business logic and the PLC controls the I/Os.
 ```xml
 <project>
     <properties>
-      <strolch.version>1.7.0-SNAPSHOT</strolch.version>
-      <strolch.plc.version>0.1.0-SNAPSHOT</strolch.plc.version>
+      <strolch.version>1.8.1</strolch.version>
+      <strolch.plc.version>1.2.1</strolch.plc.version>
     </properties>
     
     <dependencyManagement>
@@ -65,7 +65,7 @@ business logic and the PLC controls the I/Os.
 </project>
 ```
 
-3. Add a bower dependency: `"strolch-wc-plc": "strolch-li/strolch-wc-plc#^0.3.4"`
+3. Add a bower dependency: `"strolch-wc-plc": "strolch-li/strolch-wc-plc#^0.3.20"`
    to `src/main/webapp/bower.json`
 
    After adding the dependency, run `gulp` in the webapp directory. Gulp should
