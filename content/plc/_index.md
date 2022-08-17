@@ -19,7 +19,7 @@ description in how to set up your own Strolch based PLC.
 
 Checkout the code at [GitHub](https://github.com/strolch-li/strolch-plc)
 
-Strolch PLC is also deployed to Maven Central. Current version is 1.2.1.
+Strolch PLC is also deployed to Maven Central. Current version is 1.2.2 and is using Strolch version 1.8.5.
 
 Currently, we have the following topics of discussion:
 

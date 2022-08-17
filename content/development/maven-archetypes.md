@@ -6,8 +6,11 @@ weight: 40
 ## Maven Archetypes
 
 Maven offers archetypes to generate new projects. Strolch offers the following archetypes, to create new projects:
+
 * [li.strolch.mvn.archetype.main](/development/main-class-app) for Java main class applications
-* [li.strolch.mvn.archetype.webapp](/development/web-app) for Java Web based applications using REST and Polymer 1.x as the frontend.
+* [li.strolch.mvn.archetype.webapp](/development/web-app) for Java Web based applications using REST and Polymer 1.x as
+  the frontend.
+* [li.strolch.mvn.archetype.plc](/plc/example-set-up) for Strolch PLC projects.
 
 To use the archetypes, clone the archetypes repository and install it locally:
 
