@@ -12,7 +12,7 @@ Maven offers archetypes to generate new projects. Strolch offers the following a
 To use the archetypes, clone the archetypes repository and install it locally:
 
 ```shell
-git clone git@github.com:strolch-li/strolch-maven-archetypes.git
+git clone https://github.com/strolch-li/strolch-maven-archetypes.git
 cd strolch-maven-archetypes
 mvn clean install
 ```
