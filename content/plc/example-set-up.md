@@ -26,8 +26,8 @@ business logic and the PLC controls the I/Os.
 ```xml
 <project>
     <properties>
-      <strolch.version>1.8.1</strolch.version>
-      <strolch.plc.version>1.2.1</strolch.plc.version>
+      <strolch.version>1.8.4</strolch.version>
+      <strolch.plc.version>1.2.2</strolch.plc.version>
     </properties>
     
     <dependencyManagement>
