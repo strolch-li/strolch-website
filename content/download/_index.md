@@ -22,7 +22,7 @@ The easiest way to include strolch in your project is to use the following maven
 <project>
     
     <properties>
-        <strolch.version>1.6.100</strolch.version>
+        <strolch.version>1.8.5</strolch.version>
     </properties>
     
     <dependencies>
