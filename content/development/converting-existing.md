@@ -3,7 +3,7 @@ title: 'Converting Existing App'
 weight: 90
 ---
 
-# Converting an existing application
+## Converting an existing application
 
 You can convert an existing application to a Strolch agent, but this might be a
 bit daunting in the beginning. If you are planning on doing this, first create a
