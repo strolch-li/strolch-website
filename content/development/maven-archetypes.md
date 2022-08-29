@@ -17,6 +17,7 @@ To use the archetypes, clone the archetypes repository and install it locally:
 ```shell
 git clone https://github.com/strolch-li/strolch-maven-archetypes.git
 cd strolch-maven-archetypes
+git checkout 0.1.0
 mvn clean install
 ```
 
