@@ -5,7 +5,7 @@ gen
 bin
 
 # IntelliJ files
-.idea
+.idea/
 *.iml
 
 # Eclipse files
