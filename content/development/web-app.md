@@ -59,7 +59,7 @@ following command will fail.
 ```shell
 mvn archetype:generate \
   -DarchetypeGroupId=li.strolch \
-  -DarchetypeArtifactId=li.strolch.mvn.archetype.webapp \
+  -DarchetypeArtifactId=strolch.mvn.archetype.webapp \
   -DarchetypeVersion=0.1.0-SNAPSHOT \
   -DgroupId=<my.groupid> \
   -DartifactId=<my-artifactId> \

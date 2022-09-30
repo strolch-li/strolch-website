@@ -26,7 +26,7 @@ Create a new project using the PLC Strolch Maven Archetype:
 ```shell
 mvn archetype:generate \
   -DarchetypeGroupId=li.strolch \
-  -DarchetypeArtifactId=li.strolch.mvn.archetype.plc \
+  -DarchetypeArtifactId=strolch.mvn.archetype.plc \
   -DarchetypeVersion=0.1.0-SNAPSHOT \
   -DgroupId=<my.groupid> \
   -DartifactId=<my-artifactId> \

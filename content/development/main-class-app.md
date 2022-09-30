@@ -16,7 +16,7 @@ following command will fail.
 ```shell
 mvn archetype:generate \
   -DarchetypeGroupId=li.strolch \
-  -DarchetypeArtifactId=li.strolch.mvn.archetype.main \
+  -DarchetypeArtifactId=strolch.mvn.archetype.main \
   -DarchetypeVersion=0.1.0-SNAPSHOT \
   -DgroupId=<my.groupid> \
   -DartifactId=<my-artifactId> \

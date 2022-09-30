@@ -14,6 +14,6 @@ Once that works, use the archetypes configuration to reconfigure your project to
 {{% notice warning %}}
 Note: Beware to select the archetype pertaining to your use case:
 
-* For a web app use the [li.strolch.mvn.archetype.webapp](/development/web-app)
-* For an application with a main method use [li.strolch.mvn.archetype.main](/development/main-class-app)
+* For a web app use the [strolch.mvn.archetype.webapp](/development/web-app)
+* For an application with a main method use [strolch.mvn.archetype.main](/development/main-class-app)
   {{% /notice %}}
