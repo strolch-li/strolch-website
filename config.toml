@@ -108,3 +108,9 @@ name = "<i class='fab fa-github'></i> GitHub project"
 identifier = "github"
 url = "https://github.com/strolch-li"
 weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-mastodon'></i> Mastodon"
+identifier = "mastodon"
+url = "https://mstdn.gsi.li/@eitch"
+weight = 10
