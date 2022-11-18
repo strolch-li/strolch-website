@@ -35,7 +35,7 @@ public class Test {
   public static void main(String[] args) {
     try (StrolchTransaction tx = openTx(realmName)) {
       Resource resource = tx.getResourceBy("MyType", "myResource");
-      Date date = resource.getDate("myBag", "myParam1");
+      ZonedDateTime date = resource.getDate("myBag", "myParam1");
       logger.info("myParam date has value " + date);
     }
   }
