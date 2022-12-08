@@ -2,6 +2,8 @@
 title: Strolch Overview
 ---
 
+![strolch_mascot_head.png](assets/images/strolch_mascot_hero.svg)
+
 ## Strolch Overview
 
 Strolch is framework for developing Software. It's main features are:

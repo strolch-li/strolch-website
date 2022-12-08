@@ -19,7 +19,7 @@ home = ["HTML", "RSS", "JSON"]
   # See the config.toml file from this documentation site to have an example.
   editURL = "https://github.com/strolch-li/strolch-website/tree/develop/content/"
   # Author of the site, will be used in meta information
-  author = "Strolch"
+  author = "Robert von Burg"
   # Description of the site, will be used in meta information
   description = "Strolch is a parameterized framework for use on servers and IoT "
   # Shows a checkmark for visited pages on the menu
