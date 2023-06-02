@@ -7,7 +7,7 @@ weight: 41
 
 To start developing web-based Strolch apps you need the following:
 
-* Apache Tomcat 9.x (10.x isn't supported yet). Just unpack it somewhere, to be used later, when running the
+* Apache Tomcat 10.1. Just unpack it somewhere, to be used later, when running the
   application.
 * NodeJS v11.x (other versions don't work with [Bower](https://bower.io), the installation is described below.
 
@@ -26,7 +26,7 @@ Test that NodeJS is working properly:
 
 ```shell
 $ npm --version
-6.8.0
+6.14.2
 ```
 
 Once NodeJS is installed, then you can prepare the web dependencies:
@@ -43,7 +43,7 @@ $ bower --version
 1.8.14
 
 $ gulp --version
-[17:22:56] CLI version 2.0.1
+[17:22:56] CLI version 2.3.0
 ```
 
 ## Creating a Strolch Web App
@@ -102,7 +102,7 @@ directory and then start tomcat with the
 following command:
 
 ```shell
-cd tomcat9/bin
+cd tomcat10.1.9/bin
 ./catalina.sh run
 ```
 
