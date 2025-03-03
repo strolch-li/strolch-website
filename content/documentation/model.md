@@ -18,7 +18,7 @@ A possible model would look as follows:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
-<StrolchModel xmlns="https://strolch.li/xsd/StrolchModel-1.6.xsd">
+<StrolchModel xmlns="https://strolch.li/schema/StrolchModel.xsd">
 
     <Resource Id="Product" Name="Product Template" Type="Template">
         <ParameterBag Id="parameters" Name="Parameters" Type="Parameters">
@@ -248,15 +248,15 @@ Note: Checkout [example-model.xml](https://github.com/strolch-li/strolch/blob/de
 {{% /notice %}}
 
 {{% notice tip %}}
-There is an XML Schema which defines the model in XML: [StrolchModel-1.6.xsd](/xsd/StrolchModel-1.6.xsd "{target='_blank'}")
+There is an XML Schema which defines the model in XML: [StrolchModel.xsd](/schema/StrolchModel.xsd "{target='_blank'}")
 {{% /notice %}}
 
 Here is an example of all the possible elements in Strolch:
 
 ```xml
 <StrolchModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="https://strolch.li/xsd/StrolchModel-1.6.xsd"
-xsi:schemaLocation="https://strolch.li/xsd/StrolchModel-1.6.xsd StrolchModel-1.6.xsd">
+xmlns="https://strolch.li/schema/StrolchModel.xsd"
+xsi:schemaLocation="https://strolch.li/schema/StrolchModel.xsd StrolchModel.xsd">
 
   <IncludeFile file="Include1.xml"/>
 
