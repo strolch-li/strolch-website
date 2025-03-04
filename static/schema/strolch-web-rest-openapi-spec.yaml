@@ -1,0 +1,3167 @@
+openapi: 3.1.0
+info:
+  contact:
+    email: eitch@eitchnet.ch
+    name: Robert von Burg
+    url: https://www.eitchnet.ch
+  description: |-
+    Strolch is an agent implementing a service architecture. With the exception of JAX-RS, everything is implemented in Java SE.
+
+    All aspects of a framework for applications are implemented:
+    - Parameterized model
+    - Transaction management
+    - Privilege management
+    - Services and Commands for Use-Cases
+    - Policies
+    - Component lifecycle management
+  license:
+    name: Apache 2.0
+    url: https://strolch.li
+  summary: "This API implements all aspects of modifying the agent at runtime: Component\
+    \ lifecycle management, Authentication, Execution control, Inspector for data\
+    \ and configuration, Job control, Notification control, Privilege management"
+  title: Strolch RESTful API
+  version: "1.0"
+externalDocs:
+  description: Strolch's website
+  url: https://strolch.li
+tags:
+- description: API to view and modify components and configuration
+  name: Agent
+- description: Manage and query audit logs.
+  name: Audits Resource
+- description: Handles user authentication
+  name: Authentication
+- description: Manage execution activities and states.
+  name: Control Resource
+- description: Provides operations to retrieve system enumerations.
+  name: Enum Resource
+- description: Provides operations for retrieving and updating internationalization
+    data.
+  name: I18n Resource
+- description: Provides operations for inspecting realms and elements in various formats.
+  name: Inspector
+- description: Provides operations for inspecting the agent's supported languages
+  name: I18n
+- description: Endpoints for querying and managing Strolch models.
+  name: Model
+- description: Endpoints for managing user notifications.
+  name: Notifications
+- description: Endpoints for retrieving operations log messages.
+  name: Operations Log
+- description: Endpoints for managing privilege groups.
+  name: Privilege Groups
+- description: Endpoints for managing privilege policies.
+  name: Privilege Policies
+- description: Endpoints for managing privilege roles.
+  name: Privilege Roles
+- description: Endpoints for managing privilege users.
+  name: Privilege Users
+- description: API for managing reports
+  name: Report API
+- description: Handles Strolch job management
+  name: Strolch Jobs
+- description: Manages user sessions
+  name: User Sessions
+- description: Retrieves version information
+  name: Version
+paths:
+  /strolch/agent/components:
+    get:
+      description: Retrieves all components registered in the agent.
+      operationId: getComponents
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: List of agent components.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get agent components
+      tags:
+      - Agent
+  /strolch/agent/components/{name}/state:
+    put:
+      description: Updates the state of a specific component.
+      operationId: setComponentState
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: Component state updated successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Component not found.
+        "500":
+          description: Internal server error.
+      summary: Set component state
+      tags:
+      - Agent
+  /strolch/agent/configuration/reload:
+    put:
+      description: Forces the agent to reload its configuration.
+      operationId: reloadConfiguration
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: Configuration reloaded successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Reload agent configuration
+      tags:
+      - Agent
+  /strolch/agent/statistics:
+    get:
+      description: Retrieves runtime statistics of the agent.
+      operationId: getStatistics
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: Agent statistics retrieved.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get agent statistics
+      tags:
+      - Agent
+  /strolch/audits/types:
+    get:
+      description: Retrieves all available audit types.
+      operationId: queryTypes
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - Type1
+              - Type2
+          description: List of audit types.
+        "500":
+          description: Internal server error.
+      summary: Get audit types
+      tags:
+      - Audits Resource
+  /strolch/authentication:
+    post:
+      description: Processes a login request using credentials provided in the request
+        body and returns an authentication token or an error.
+      operationId: authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                keepAlive:
+                  type: boolean
+                password:
+                  type: string
+                username:
+                  type: string
+        description: User credentials for authentication
+        required: true
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully authenticated
+        "400":
+          description: Invalid input data
+        "401":
+          description: Invalid credentials
+        "500":
+          description: Internal server error
+      summary: Authenticate a user using provided credentials
+      tags:
+      - Authentication
+  /strolch/authentication/challenge:
+    post:
+      description: Starts an authentication challenge for clients requiring additional
+        authentication mechanisms.
+      operationId: initiateChallenge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                usage:
+                  type: string
+                  enum:
+                  - ANY
+                  - SINGLE
+                  - SET_PASSWORD
+                username:
+                  type: string
+        description: User credentials for authentication
+        required: true
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Challenge initiated successfully
+        "400":
+          description: Invalid input data
+        "500":
+          description: Internal server error
+      summary: Initiate an authentication challenge
+      tags:
+      - Authentication
+    put:
+      description: Validates the response to an earlier initiated authentication challenge.
+      operationId: validateChallenge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                challenge:
+                  type: string
+                username:
+                  type: string
+        description: User credentials for authentication
+        required: true
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Challenge validated successfully
+        "400":
+          description: Invalid challenge response
+        "401":
+          description: Unauthorized access
+        "500":
+          description: Internal server error
+      summary: Validate an authentication challenge
+      tags:
+      - Authentication
+  /strolch/authentication/sso:
+    post:
+      description: Handles Single Sign-On authentication and provides an authentication
+        token or an error.
+      operationId: authenticateSingleSignOn
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully authenticated
+        "401":
+          description: SSO authentication failed
+        "500":
+          description: Internal server error
+      summary: Authenticate a user through Single Sign-On (SSO)
+      tags:
+      - Authentication
+  /strolch/authentication/{authToken}:
+    delete:
+      description: Invalidates a session associated with the provided authentication
+        token.
+      operationId: invalidateSession
+      parameters:
+      - in: path
+        name: authToken
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session invalidated successfully
+        "401":
+          description: Invalid authentication token
+        "500":
+          description: Internal server error
+      summary: Invalidate a session
+      tags:
+      - Authentication
+    get:
+      description: Returns details of the session associated with the provided authentication
+        token if valid.
+      operationId: getValidatedSession
+      parameters:
+      - in: path
+        name: authToken
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Session details retrieved successfully
+        "401":
+          description: Invalid authentication token
+        "500":
+          description: Internal server error
+      summary: Get validated session details
+      tags:
+      - Authentication
+    head:
+      description: Checks if the session associated with the given authentication
+        token is valid.
+      operationId: validateSession
+      parameters:
+      - in: path
+        name: authToken
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session is valid
+        "401":
+          description: Invalid or expired session
+        "500":
+          description: Internal server error
+      summary: Validate a session
+      tags:
+      - Authentication
+    put:
+      description: Extends the session validity associated with the given authentication
+        token.
+      operationId: refreshSession
+      parameters:
+      - in: path
+        name: authToken
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Session refreshed successfully
+        "401":
+          description: Invalid or expired session
+        "500":
+          description: Internal server error
+      summary: Refresh an active session
+      tags:
+      - Authentication
+  /strolch/control:
+    get:
+      description: Retrieves all currently active execution activities in the given
+        realm.
+      operationId: getActivities
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: List of active execution activities.
+        "500":
+          description: Internal server error.
+      summary: Get active execution activities
+      tags:
+      - Control Resource
+  /strolch/control/activity/state:
+    delete:
+      description: Stops execution of an activity and removes it from tracking.
+      operationId: removeActivityFromExecution
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Activity successfully removed from execution.
+        "400":
+          description: Invalid activity parameters provided.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Remove activity from execution
+      tags:
+      - Control Resource
+    post:
+      description: Starts execution of the specified activity.
+      operationId: executeActivity
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+      - in: query
+        name: id
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Activity execution started successfully.
+        "400":
+          description: Invalid parameters provided.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Execute an activity
+      tags:
+      - Control Resource
+    put:
+      description: Updates the state of an activity element.
+      operationId: setElementState
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: query
+        name: locator
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Activity state updated successfully.
+        "400":
+          description: Invalid state or locator provided.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Set activity state
+      tags:
+      - Control Resource
+  /strolch/control/all:
+    delete:
+      description: Removes all currently running execution activities.
+      operationId: clearAllActivities
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: All execution activities cleared.
+        "500":
+          description: Internal server error.
+      summary: Clear all execution activities
+      tags:
+      - Control Resource
+  /strolch/control/executionHandler/state:
+    get:
+      description: Retrieves the current state of the execution handler.
+      operationId: getExecutionHandlerState
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: Execution handler state returned.
+        "500":
+          description: Internal server error.
+      summary: Get execution handler state
+      tags:
+      - Control Resource
+    put:
+      description: Sets the state of the execution handler.
+      operationId: setExecutionHandlerState
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: query
+        name: state
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Execution handler state updated.
+        "400":
+          description: Invalid state value.
+        "500":
+          description: Internal server error.
+      summary: Set execution handler state
+      tags:
+      - Control Resource
+  /strolch/enums/{name}:
+    get:
+      description: Fetches an enumeration by name with optional hidden elements filtering.
+      operationId: getEnum
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: withoutHidden
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  locale:
+                    type: string
+                  name:
+                    type: string
+                  values: {}
+          description: Successful retrieval of enumeration.
+        "500":
+          description: Internal server error.
+      summary: Retrieve an enumeration
+      tags:
+      - Enum Resource
+  /strolch/enums/{name}/{locale}:
+    get:
+      description: Fetches an enumeration by name with a specific locale override.
+      operationId: getEnumBySpecificLocale
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: locale
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  locale:
+                    type: string
+                  name:
+                    type: string
+                  values: {}
+          description: Successful retrieval of enumeration with locale.
+        "500":
+          description: Internal server error.
+      summary: Retrieve an enumeration with specific locale
+      tags:
+      - Enum Resource
+  /strolch/i18n/data:
+    get:
+      description: Fetches the internationalization data file and returns it as a
+        pretty-printed JSON string.
+      operationId: getI18nDataPlain
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: I18n data retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Retrieve I18n data as plain text
+      tags:
+      - I18n Resource
+    put:
+      description: Updates the internationalization data file with new content.
+      operationId: setI18nData
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StrolchResponse"
+          description: I18n data updated successfully.
+        "400":
+          description: Invalid JSON format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Update I18n data
+      tags:
+      - I18n Resource
+  /strolch/inspector:
+    get:
+      description: Retrieves an overview of the available realms and their element
+        counts.
+      operationId: getAgentOverview
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Agent overview retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get agent overview
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}:
+    get:
+      description: Retrieves detailed information about a specific realm.
+      operationId: getRealmOverview
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Realm overview retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get realm overview
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/activities:
+    get:
+      description: Retrieves an overview of activities within a realm.
+      operationId: getActivitiesOverview
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Activities overview retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get activities overview
+      tags:
+      - Inspector
+    post:
+      description: Adds a new activity to the system using XML format.
+      operationId: addActivityAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Activity added successfully.
+        "400":
+          description: Invalid XML format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add an activity as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/activities/xml:
+    get:
+      description: Exports all activities of a realm in XML format.
+      operationId: exportActivitiesToXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Activities exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export activities as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/activities/{type}:
+    delete:
+      description: Removes multiple activities of a specified type within a realm.
+      operationId: removeActivitiesByType
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: ids
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Activities removed successfully.
+        "400":
+          description: Invalid request format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Remove activities by type
+      tags:
+      - Inspector
+    get:
+      description: Retrieves activities of a specific type within a realm.
+      operationId: queryActivitiesByType
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: overview
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Activities retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Query activities by type
+      tags:
+      - Inspector
+    post:
+      description: Adds a new activity to the system using flat JSON format.
+      operationId: addActivityAsJsonFlat
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: flat
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Activity added successfully.
+        "400":
+          description: Invalid JSON format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add an activity as JSON (flat)
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/activities/{type}/xml:
+    get:
+      description: Exports all activities of a given type within a realm in XML format.
+      operationId: exportActivitiesOfTypeToXml
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Activities exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export activities of a specific type as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/activities/{type}/{id}:
+    delete:
+      description: Removes a single activity from the system by ID.
+      operationId: removeActivity
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Activity removed successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Activity not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a specific activity
+      tags:
+      - Inspector
+    get:
+      description: Retrieves a specific activity in XML format.
+      operationId: getActivityAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Activity retrieved successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Activity not found.
+        "500":
+          description: Internal server error.
+      summary: Get activity as XML
+      tags:
+      - Inspector
+    put:
+      description: Updates a specific activity in XML format.
+      operationId: updateActivityAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Activity updated successfully.
+        "400":
+          description: Invalid XML format or mismatched ID.
+        "403":
+          description: Access denied.
+        "404":
+          description: Activity not found.
+        "500":
+          description: Internal server error.
+      summary: Update an activity as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/import:
+    post:
+      description: "Imports model data into the system from an XML file, with various\
+        \ options for adding or updating resources, orders, and activities."
+      operationId: importAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: failOnUpdate
+        schema:
+          type: boolean
+      - in: query
+        name: addResources
+        schema:
+          type: boolean
+      - in: query
+        name: addOrders
+        schema:
+          type: boolean
+      - in: query
+        name: addActivities
+        schema:
+          type: boolean
+      - in: query
+        name: updateResources
+        schema:
+          type: boolean
+      - in: query
+        name: updateOrders
+        schema:
+          type: boolean
+      - in: query
+        name: updateActivities
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Import successful.
+        "400":
+          description: Invalid XML format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Import model data as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/orders:
+    get:
+      description: Retrieves an overview of orders within a realm.
+      operationId: getOrdersOverview
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Orders overview retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get orders overview
+      tags:
+      - Inspector
+    post:
+      description: Adds a new order to the system using XML format.
+      operationId: addOrderAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Order added successfully.
+        "400":
+          description: Invalid XML format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add an order as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/orders/xml:
+    get:
+      description: Exports all orders of a realm in XML format.
+      operationId: exportOrdersToXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Orders exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export orders as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/orders/{type}:
+    delete:
+      description: Removes multiple orders of a specified type within a realm.
+      operationId: removeOrdersByType
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: ids
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Orders removed successfully.
+        "400":
+          description: Invalid request format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Remove orders by type
+      tags:
+      - Inspector
+    get:
+      description: Retrieves orders of a specific type within a realm.
+      operationId: queryOrdersByType
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: overview
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Orders retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Query orders by type
+      tags:
+      - Inspector
+    post:
+      description: Adds a new order to the system using flat JSON format.
+      operationId: addOrderAsJsonFlat
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: flat
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Order added successfully.
+        "400":
+          description: Invalid JSON format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add an order as JSON (flat)
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/orders/{type}/xml:
+    get:
+      description: Exports all orders of a given type within a realm in XML format.
+      operationId: exportOrdersOfTypeToXml
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Orders exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export orders of a specific type as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/orders/{type}/{id}:
+    delete:
+      description: Removes a single order from the system by ID.
+      operationId: removeOrder
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Order removed successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Order not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a specific order
+      tags:
+      - Inspector
+    get:
+      description: Retrieves a specific order in XML format.
+      operationId: getOrderAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Order retrieved successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Order not found.
+        "500":
+          description: Internal server error.
+      summary: Get order as XML
+      tags:
+      - Inspector
+    put:
+      description: Updates a specific order in XML format.
+      operationId: updateOrderAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Order updated successfully.
+        "400":
+          description: Invalid XML format or mismatched ID.
+        "403":
+          description: Access denied.
+        "404":
+          description: Order not found.
+        "500":
+          description: Internal server error.
+      summary: Update an order as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/resources:
+    get:
+      description: Retrieves an overview of resources within a realm.
+      operationId: getResourcesOverview
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Resources overview retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get resources overview
+      tags:
+      - Inspector
+    post:
+      description: Adds a new resource to the system using XML format.
+      operationId: addResourceAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Resource added successfully.
+        "400":
+          description: Invalid XML format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add a resource as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/resources/xml:
+    get:
+      description: Exports all resources of a realm in XML format.
+      operationId: exportResourcesToXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Resources exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export resources as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/resources/{type}:
+    delete:
+      description: Removes multiple resources of a specified type within a realm.
+      operationId: removeResourcesByType
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: ids
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Resources removed successfully.
+        "400":
+          description: Invalid request format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Remove resources by type
+      tags:
+      - Inspector
+    get:
+      description: Retrieves resources of a specific type within a realm.
+      operationId: queryResourcesByType
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: overview
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Resources retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Query resources by type
+      tags:
+      - Inspector
+    post:
+      description: Adds a new resource to the system using flat JSON format.
+      operationId: addResourceAsJsonFlat
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: flat
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Resource added successfully.
+        "400":
+          description: Invalid JSON format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Add a resource as JSON (flat)
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/resources/{type}/xml:
+    get:
+      description: Exports all resources of a given type within a realm in XML format.
+      operationId: exportResourcesOfTypeToXml
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Resources exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export resources of a specific type as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/resources/{type}/{id}:
+    delete:
+      description: Removes a single resource from the system by ID.
+      operationId: removeResource
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Resource removed successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Resource not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a specific resource
+      tags:
+      - Inspector
+    get:
+      description: Retrieves a specific resource in XML format.
+      operationId: getResourceAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Resource retrieved successfully.
+        "403":
+          description: Access denied.
+        "404":
+          description: Resource not found.
+        "500":
+          description: Internal server error.
+      summary: Get resource as XML
+      tags:
+      - Inspector
+    put:
+      description: Updates a specific resource in XML format.
+      operationId: updateResourceAsXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              description: See https://strolch.li/schema/StrolchModel.xsd
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Resource updated successfully.
+        "400":
+          description: Invalid XML format or mismatched ID.
+        "403":
+          description: Access denied.
+        "404":
+          description: Resource not found.
+        "500":
+          description: Internal server error.
+      summary: Update a resource as XML
+      tags:
+      - Inspector
+  /strolch/inspector/{realm}/xml:
+    get:
+      description: Exports all elements of a realm in XML format.
+      operationId: exportRealmToXml
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                description: See https://strolch.li/schema/StrolchModel.xsd
+          description: Realm data exported successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Export realm data as XML
+      tags:
+      - Inspector
+  /strolch/jobs:
+    get:
+      description: Retrieves a list of all available jobs.
+      operationId: getAll
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully retrieved jobs
+        "403":
+          description: Forbidden - insufficient privileges
+        "500":
+          description: Internal server error
+      summary: Get all jobs
+      tags:
+      - Strolch Jobs
+  /strolch/jobs/{name}/action:
+    put:
+      description: "Executes a specified action (run, schedule, cancel) on a job."
+      operationId: doAction
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: action
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Action executed successfully
+        "400":
+          description: Invalid action specified
+        "403":
+          description: Forbidden - insufficient privileges
+        "404":
+          description: Job not found
+        "500":
+          description: Internal server error
+      summary: Perform an action on a job
+      tags:
+      - Strolch Jobs
+  /strolch/languages/supported:
+    get:
+      description: Retrieves a list of supported languages available in the system.
+      operationId: getSupportedLanguages
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: List of supported languages retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get supported languages
+      tags:
+      - I18n
+  /strolch/model/soql:
+    post:
+      description: Processes a Strolch Object Query Language (SOQL) request and returns
+        the result.
+      operationId: doQuery
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: flat
+        schema:
+          type: boolean
+          default: "false"
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Query executed successfully.
+        "400":
+          description: Invalid query format.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Execute SOQL query
+      tags:
+      - Model
+  /strolch/notifications:
+    get:
+      description: Retrieves notifications relevant to the authenticated user.
+      operationId: getUserNotifications
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: Notifications retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get user notifications
+      tags:
+      - Notifications
+    post:
+      description: Creates a new notification in the system.
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Notification created successfully.
+        "400":
+          description: Invalid request format.
+        "500":
+          description: Internal server error.
+      summary: Create a notification
+      tags:
+      - Notifications
+  /strolch/notifications/all:
+    get:
+      description: Retrieves all notifications available in the system.
+      operationId: getAllNotifications
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: All notifications retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get all notifications
+      tags:
+      - Notifications
+  /strolch/notifications/{id}:
+    delete:
+      description: Deletes a notification from the system by its ID.
+      operationId: remove
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Notification removed successfully.
+        "404":
+          description: Notification not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a notification
+      tags:
+      - Notifications
+    get:
+      description: Retrieves a single notification by its ID.
+      operationId: getNotification
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Notification retrieved successfully.
+        "404":
+          description: Notification not found.
+        "500":
+          description: Internal server error.
+      summary: Get a specific notification
+      tags:
+      - Notifications
+    put:
+      description: Updates an existing notification in the system.
+      operationId: update
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Notification updated successfully.
+        "404":
+          description: Notification not found.
+        "500":
+          description: Internal server error.
+      summary: Update a notification
+      tags:
+      - Notifications
+  /strolch/operations-log/{realm}:
+    get:
+      description: "Retrieves operation logs for a given realm with optional filters\
+        \ for severity, date range, and search query."
+      operationId: getOperationLog
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: severity
+        schema:
+          type: string
+      - in: query
+        name: exactSeverity
+        schema:
+          type: boolean
+      - in: query
+        name: from
+        schema:
+          type: string
+      - in: query
+        name: to
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagingResponse"
+          description: Operation logs retrieved successfully.
+        "403":
+          description: Access denied.
+        "500":
+          description: Internal server error.
+      summary: Get operation logs
+      tags:
+      - Operations Log
+  /strolch/privilege/groups:
+    get:
+      description: "Retrieves a list of all privilege groups, optionally filtered\
+        \ by a query."
+      operationId: getGroups
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Groups retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get all groups
+      tags:
+      - Privilege Groups
+    post:
+      description: Creates a new privilege group.
+      operationId: addGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Group created successfully.
+        "400":
+          description: Invalid request format.
+        "500":
+          description: Internal server error.
+      summary: Add a new group
+      tags:
+      - Privilege Groups
+  /strolch/privilege/groups/{group}:
+    delete:
+      description: Deletes a privilege group from the system.
+      operationId: removeGroup
+      parameters:
+      - in: path
+        name: group
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Group removed successfully.
+        "404":
+          description: Group not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a group
+      tags:
+      - Privilege Groups
+    get:
+      description: Retrieves details of a specific privilege group.
+      operationId: getGroup
+      parameters:
+      - in: path
+        name: group
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Group details retrieved successfully.
+        "404":
+          description: Group not found.
+        "500":
+          description: Internal server error.
+      summary: Get a specific group
+      tags:
+      - Privilege Groups
+    put:
+      description: Updates an existing privilege group.
+      operationId: updateGroup
+      parameters:
+      - in: path
+        name: group
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Group updated successfully.
+        "404":
+          description: Group not found.
+        "500":
+          description: Internal server error.
+      summary: Update a group
+      tags:
+      - Privilege Groups
+  /strolch/privilege/groups/{group}/privileges:
+    get:
+      description: Retrieves privilege details for a specific group.
+      operationId: getGroupPrivileges
+      parameters:
+      - in: path
+        name: group
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Group privileges retrieved successfully.
+        "404":
+          description: Group not found.
+        "500":
+          description: Internal server error.
+      summary: Get group privileges
+      tags:
+      - Privilege Groups
+  /strolch/privilege/policies:
+    get:
+      description: Retrieves a list of available privilege policies.
+      operationId: getPrivilegePolicies
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Privilege policies retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get privilege policies
+      tags:
+      - Privilege Policies
+  /strolch/privilege/roles:
+    get:
+      description: "Retrieves a list of all privilege roles, optionally filtered by\
+        \ a query."
+      operationId: getRoles
+      parameters:
+      - in: query
+        name: query
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Roles retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get all roles
+      tags:
+      - Privilege Roles
+    post:
+      description: Creates a new privilege role.
+      operationId: addRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Role created successfully.
+        "400":
+          description: Invalid request format.
+        "500":
+          description: Internal server error.
+      summary: Add a new role
+      tags:
+      - Privilege Roles
+  /strolch/privilege/roles/{roleName}:
+    delete:
+      description: Deletes a privilege role from the system.
+      operationId: removeRole
+      parameters:
+      - in: path
+        name: roleName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Role removed successfully.
+        "404":
+          description: Role not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a role
+      tags:
+      - Privilege Roles
+    get:
+      description: Retrieves details of a specific privilege role.
+      operationId: getRole
+      parameters:
+      - in: path
+        name: roleName
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Role details retrieved successfully.
+        "404":
+          description: Role not found.
+        "500":
+          description: Internal server error.
+      summary: Get a specific role
+      tags:
+      - Privilege Roles
+    put:
+      description: Updates an existing privilege role.
+      operationId: replaceRole
+      parameters:
+      - in: path
+        name: roleName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: Role updated successfully.
+        "404":
+          description: Role not found.
+        "500":
+          description: Internal server error.
+      summary: Update a role
+      tags:
+      - Privilege Roles
+  /strolch/privilege/users:
+    get:
+      description: "Retrieves a list of all privilege users, optionally filtered by\
+        \ a query."
+      operationId: queryUsers
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: Users retrieved successfully.
+        "500":
+          description: Internal server error.
+      summary: Get all users
+      tags:
+      - Privilege Users
+    post:
+      description: Creates a new privilege user.
+      operationId: addUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User created successfully.
+        "400":
+          description: Invalid request format.
+        "500":
+          description: Internal server error.
+      summary: Add a new user
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/query:
+    post:
+      description: Queries users based on the provided user representation in JSON
+        format.
+      operationId: queryUsersByUserRep
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully retrieved users
+        "400":
+          description: Invalid input data
+        "403":
+          description: Forbidden - insufficient privileges
+        "500":
+          description: Internal server error
+      summary: Query users by user representation
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}:
+    delete:
+      description: Deletes a privilege user from the system.
+      operationId: removeUser
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User removed successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Remove a user
+      tags:
+      - Privilege Users
+    get:
+      description: Retrieves details of a specific privilege user.
+      operationId: getUser
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: User details retrieved successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Get a specific user
+      tags:
+      - Privilege Users
+    put:
+      description: Updates an existing privilege user.
+      operationId: updateUser
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User updated successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Update a user
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}/locale/{locale}:
+    put:
+      description: Updates the locale of a specific user.
+      operationId: setUserLocale
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: locale
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User locale updated successfully.
+        "400":
+          description: Invalid locale provided.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Set user locale
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}/password:
+    delete:
+      description: Removes the password of a specific user.
+      operationId: clearUserPassword
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User password cleared successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Clear user password
+      tags:
+      - Privilege Users
+    put:
+      description: Updates the password of a specific user.
+      operationId: setUserPassword
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User password updated successfully.
+        "404":
+          description: User not found.
+        "406":
+          description: Password does not meet strength requirements.
+        "500":
+          description: Internal server error.
+      summary: Set user password
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}/password/state:
+    put:
+      description: Updates the password state of a specific user.
+      operationId: setUserPasswordState
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User password state updated successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Set user password state
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}/privileges:
+    get:
+      description: Retrieves the privileges associated with a specific user.
+      operationId: getUserPrivileges
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: {}
+          description: User privileges retrieved successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Get user privileges
+      tags:
+      - Privilege Users
+  /strolch/privilege/users/{username}/state/{state}:
+    put:
+      description: Updates the state of a specific user.
+      operationId: setUserState
+      parameters:
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: state
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceResultResponse"
+          description: User state updated successfully.
+        "400":
+          description: Invalid state provided.
+        "404":
+          description: User not found.
+        "500":
+          description: Internal server error.
+      summary: Set user state
+      tags:
+      - Privilege Users
+  /strolch/reports:
+    get:
+      description: Retrieves a list of all report IDs.
+      operationId: getAllReportIds
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successful retrieval
+        "500":
+          description: Internal server error
+      summary: Get all report IDs
+      tags:
+      - Report API
+  /strolch/reports/{id}:
+    post:
+      description: Retrieves a report based on its ID.
+      operationId: getReportById
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successful retrieval
+        "404":
+          description: Report not found
+        "500":
+          description: Internal server error
+      summary: Get report by ID
+      tags:
+      - Report API
+  /strolch/reports/{id}/csv:
+    post:
+      description: Retrieves a report as a CSV file.
+      operationId: getReportByIdAsCsv
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          content:
+            text/csv: {}
+          description: Successful retrieval
+        "404":
+          description: Report not found
+        "500":
+          description: Internal server error
+      summary: Get report as CSV
+      tags:
+      - Report API
+  /strolch/reports/{id}/facets:
+    get:
+      description: Retrieves facets of a specific report.
+      operationId: getReportFacets
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successful retrieval
+        "404":
+          description: Report not found
+        "500":
+          description: Internal server error
+      summary: Get report facets
+      tags:
+      - Report API
+  /strolch/reports/{id}/facets/{type}/fields:
+    get:
+      description: Retrieves specific facet values for a report.
+      operationId: getReportFacetValues
+      parameters:
+      - in: query
+        name: realm
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: limit
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successful retrieval
+        "404":
+          description: Facet not found
+        "500":
+          description: Internal server error
+      summary: Get report facet values
+      tags:
+      - Report API
+  /strolch/sessions:
+    get:
+      description: Retrieves a list of active user sessions.
+      operationId: querySessions
+      parameters:
+      - in: query
+        name: realmName
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+      - in: query
+        name: query
+        schema:
+          type: string
+      - in: query
+        name: orderBy
+        schema:
+          type: string
+      - in: query
+        name: descending
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully retrieved sessions
+        "403":
+          description: Forbidden - insufficient privileges
+        "500":
+          description: Internal server error
+      summary: Query user sessions
+      tags:
+      - User Sessions
+  /strolch/sessions/{sessionId}:
+    delete:
+      description: Invalidates a user session by session ID.
+      operationId: invalidateSession_1
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session invalidated successfully
+        "403":
+          description: Forbidden - insufficient privileges
+        "404":
+          description: Session not found
+        "500":
+          description: Internal server error
+      summary: Invalidate a session
+      tags:
+      - User Sessions
+    get:
+      description: Retrieves details of a specific session by session ID.
+      operationId: getSession
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Session details retrieved successfully
+        "403":
+          description: Forbidden - insufficient privileges
+        "404":
+          description: Session not found
+        "500":
+          description: Internal server error
+      summary: Get session details
+      tags:
+      - User Sessions
+  /strolch/sessions/{sessionId}/locale/{locale}:
+    put:
+      description: Updates the locale for a specific user session.
+      operationId: setSessionLocale
+      parameters:
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: locale
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Locale updated successfully
+        "400":
+          description: Invalid locale format
+        "403":
+          description: Forbidden - insufficient privileges
+        "404":
+          description: Session not found
+        "500":
+          description: Internal server error
+      summary: Set session locale
+      tags:
+      - User Sessions
+  /strolch/version:
+    get:
+      description: Retrieves the agent and application version information.
+      operationId: getVersions
+      responses:
+        "200":
+          content:
+            application/json: {}
+          description: Successfully retrieved version information
+        "500":
+          description: Internal server error
+      summary: Get system versions
+      tags:
+      - Version
+components:
+  schemas:
+    I18nMessageResponse:
+      type: object
+      description: Represents an i18n message
+      properties:
+        exception:
+          type: string
+          description: The stack trace if available
+        key:
+          type: string
+          description: The key of the i18n message
+        message:
+          type: string
+          description: The formatted i18n message
+        values:
+          type: object
+          additionalProperties:
+            type: string
+            description: formatting values
+          description: formatting values
+    PagingResponse:
+      type: object
+      description: Represents paging data
+      properties:
+        data:
+          type: array
+          description: The page of data
+          items:
+            description: The page of data
+        dataSetSize:
+          type: integer
+          format: int64
+          description: Total number of available records.
+        lastOffset:
+          type: integer
+          format: int32
+          description: Offset for the last set of records.
+        limit:
+          type: integer
+          format: int32
+          description: Maximum number of records returned per request.
+        nextOffset:
+          type: integer
+          format: int32
+          description: Offset for the next set of records.
+        offset:
+          type: integer
+          format: int32
+          description: Starting point for fetching records.
+        previousOffset:
+          type: integer
+          format: int32
+          description: Offset for the previous set of records.
+        size:
+          type: integer
+          format: int32
+          description: Number of records in the current page.
+    ServiceResultResponse:
+      type: object
+      description: Represents the result of a service execution.
+      properties:
+        exceptionMsg:
+          type: string
+          description: Error message if an exception occurred.
+          example: NullPointerException at line 42
+        i18n:
+          description: Internationalization message details if available.
+        msg:
+          type: string
+          description: Message describing the result.
+          example: Operation completed successfully.
+        state:
+          type: string
+          description: The state of the result.
+          enum:
+          - SUCCESS
+          - WARNING
+          - FAILED
+          - EXCEPTION
+          - ACCESS_DENIED
+          example: SUCCESS
+        throwable:
+          type: string
+          description: Stack trace of the exception if applicable.
+    StrolchResponse:
+      type: object
+      description: Represents a standard Strolch response
+      properties:
+        data:
+          description: Message describing the result.
+        i18n:
+          $ref: "#/components/schemas/I18nMessageResponse"
+          description: Internationalization message details if available.
+        msg:
+          type: string
+          description: Message describing the result.
+          example: Operation completed successfully.

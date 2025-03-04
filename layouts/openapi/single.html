@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="/swagger-ui/swagger-ui.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #74b559;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            text-decoration: underline;
+        }
+
+        .swagger-container {
+            padding: 20px;
+        }
+    </style>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div><a id="logo" href="/">
+        <img height="64px" src="/logo.png">
+    </a>
+        <p> {{ .Site.Title }} RESTful API Documentation</p>
+    </div>
+    <div>
+        <button onclick="window.history.back()">← Back</button>
+    </div>
+</div>
+
+<div id="swagger-ui"></div>
+
+<script src="/swagger-ui/swagger-ui-bundle.js"></script>
+<script>
+    window.onload = function () {
+        SwaggerUIBundle({
+            url: "{{ .Site.BaseURL }}/schema/strolch-web-rest-openapi-spec.yaml",
+            dom_id: "#swagger-ui"
+        });
+    };
+</script>
+</body>
+</html>
