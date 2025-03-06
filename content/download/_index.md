@@ -22,13 +22,13 @@ The easiest way to include strolch in your project is to use the following maven
 <project>
     
     <properties>
-        <strolch.version>1.8.5</strolch.version>
+        <strolch.version>2.5.0</strolch.version>
     </properties>
     
     <dependencies>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.bom</artifactId>
+            <artifactId>strolch-bom</artifactId>
             <type>pom</type>
             <version>${strolch.version}</version>
             <scope>import</scope>

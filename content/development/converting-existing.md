@@ -16,4 +16,5 @@ Note: Beware to select the archetype pertaining to your use case:
 
 * For a web app use the [strolch.mvn.archetype.webapp](/development/web-app)
 * For an application with a main method use [strolch.mvn.archetype.main](/development/main-class-app)
-  {{% /notice %}}
+
+{{% /notice %}}

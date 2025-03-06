@@ -5,7 +5,7 @@ weight: 10
 
 ## Prerequisites
 To start developing Strolch you need an installed:
-* Java JDK 17
+* Java JDK 23
 * Apache Maven 3.x
 
 You can install these using the awesome [SDKMAN!](https://sdkman.io/):
@@ -22,17 +22,17 @@ sdk install mvnd
 Test your Java installation:
 ```shell
 $ java -version
-openjdk version "17.0.4" 2022-07-19
-OpenJDK Runtime Environment Temurin-17.0.4+8 (build 17.0.4+8)
-OpenJDK 64-Bit Server VM Temurin-17.0.4+8 (build 17.0.4+8, mixed mode, sharing)
+openjdk version "23.0.1" 2024-10-15
+OpenJDK Runtime Environment Zulu23.30+13-CA (build 23.0.1+11)
+OpenJDK 64-Bit Server VM Zulu23.30+13-CA (build 23.0.1+11, mixed mode, sharing)
 ```
 
 Test your Maven installation:
 ```shell
 $ mvn --version
-Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
 Maven home: /home/user/.sdkman/candidates/maven/current
-Java version: 17.0.4, vendor: Eclipse Adoptium, runtime: /home/user/.sdkman/candidates/java/17.0.4-tem
+Java version: 23.0.1, vendor: Azul Systems, Inc., runtime: /home/user/.sdkman/candidates/java/23.0.1-zulu
 Default locale: en_US, platform encoding: UTF-8
-OS name: "linux", version: "5.18.11-051811-generic", arch: "amd64", family: "unix"
+OS name: "linux", version: "6.14.0-061400rc3-generic", arch: "amd64", family: "unix"
 ```

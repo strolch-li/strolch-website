@@ -3,6 +3,7 @@ out
 target
 gen
 bin
+public/
 
 # IntelliJ files
 .idea/
