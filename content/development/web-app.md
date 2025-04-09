@@ -60,7 +60,7 @@ following command will fail.
 mvn archetype:generate \
   -DarchetypeGroupId=li.strolch \
   -DarchetypeArtifactId=strolch.mvn.archetype.webapp \
-  -DarchetypeVersion=0.3.0 \
+  -DarchetypeVersion=0.4.0 \
   -DgroupId=<my.groupid> \
   -DartifactId=<my-artifactId> \
   -Dversion=<my.version> \
