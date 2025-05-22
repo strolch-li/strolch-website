@@ -150,10 +150,84 @@ paths:
       summary: Get agent statistics
       tags:
       - Agent
-  /strolch/audits/types:
+  /strolch/audits/{realm}:
+    get:
+      description: Retrieves a paginated list of audits filtered by optional criteria.
+      operationId: getAudits
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          format: int32
+          default: "0"
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          format: int32
+          default: "50"
+      - in: query
+        name: from
+        schema:
+          type: string
+      - in: query
+        name: to
+        schema:
+          type: string
+      - in: query
+        name: username
+        schema:
+          type: string
+      - in: query
+        name: elementType
+        schema:
+          type: string
+      - in: query
+        name: elementSubType
+        schema:
+          type: string
+      - in: query
+        name: elementAccessed
+        schema:
+          type: string
+      - in: query
+        name: action
+        schema:
+          type: string
+      - in: query
+        name: accessType
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              example: "{\"paging\": {\"offset\": 0, \"limit\": 50, \"total\": 100},\
+                \ \"data\": [...] }"
+          description: List of audits.
+        "400":
+          description: Invalid input parameters.
+        "500":
+          description: Internal server error.
+      summary: Get audits
+      tags:
+      - Audits Resource
+  /strolch/audits/{realm}/types:
     get:
       description: Retrieves all available audit types.
       operationId: queryTypes
+      parameters:
+      - in: path
+        name: realm
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           content:
@@ -2544,13 +2618,13 @@ paths:
       summary: Query users by user representation
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}:
+  /strolch/privilege/users/{userId}:
     delete:
-      description: Deletes a privilege user from the system.
+      description: Deletes a privilege user from the system by its ID
       operationId: removeUser
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2569,11 +2643,11 @@ paths:
       tags:
       - Privilege Users
     get:
-      description: Retrieves details of a specific privilege user.
+      description: Retrieves details of a specific privilege user by its ID
       operationId: getUser
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2591,11 +2665,11 @@ paths:
       tags:
       - Privilege Users
     put:
-      description: Updates an existing privilege user.
+      description: Updates an existing privilege user by its ID
       operationId: updateUser
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2618,13 +2692,13 @@ paths:
       summary: Update a user
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}/locale/{locale}:
+  /strolch/privilege/users/{userId}/locale/{locale}:
     put:
-      description: Updates the locale of a specific user.
+      description: Updates the locale of a specific user by its ID
       operationId: setUserLocale
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2649,13 +2723,13 @@ paths:
       summary: Set user locale
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}/password:
+  /strolch/privilege/users/{userId}/password:
     delete:
-      description: Removes the password of a specific user.
+      description: Removes the password of a specific user by its ID
       operationId: clearUserPassword
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2674,11 +2748,11 @@ paths:
       tags:
       - Privilege Users
     put:
-      description: Updates the password of a specific user.
+      description: Updates the password of a specific user by its ID
       operationId: setUserPassword
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2703,13 +2777,13 @@ paths:
       summary: Set user password
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}/password/state:
+  /strolch/privilege/users/{userId}/password/state:
     put:
-      description: Updates the password state of a specific user.
+      description: Updates the password state of a specific user by its ID
       operationId: setUserPasswordState
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2732,13 +2806,14 @@ paths:
       summary: Set user password state
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}/privileges:
+  /strolch/privilege/users/{userId}/privileges:
     get:
-      description: Retrieves the privileges associated with a specific user.
+      description: Retrieves the privileges associated with a specific user by its
+        ID
       operationId: getUserPrivileges
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
@@ -2755,13 +2830,13 @@ paths:
       summary: Get user privileges
       tags:
       - Privilege Users
-  /strolch/privilege/users/{username}/state/{state}:
+  /strolch/privilege/users/{userId}/state/{state}:
     put:
-      description: Updates the state of a specific user.
+      description: Updates the state of a specific user by its ID
       operationId: setUserState
       parameters:
       - in: path
-        name: username
+        name: userId
         required: true
         schema:
           type: string
