@@ -6,9 +6,9 @@
     {{ hugo.Generator }}
     {{ partial "meta.html" . }}
     {{ partial "favicon.html" . }}
-    <title>{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
+    <title>{{ .Title }} {{ default "::" site.Params.titleSeparator }} {{ site.Title }}</title>
 
-    {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
+    {{ $assetBusting := not site.Params.disableAssetsBusting }}
     <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/fontawesome-all.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/hybrid.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
@@ -18,10 +18,10 @@
     <link href="{{"css/atom-one-dark-reasonable.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/hugo-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    {{with .Site.Params.themeVariant}}
+    {{with site.Params.themeVariant}}
     <link href="{{(printf "css/theme-%s.css" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     {{end}}
-    {{ range .Site.Params.custom_css -}}
+    {{ range site.Params.custom_css -}}
     <link href="{{(printf "%s" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     {{- end }}
 
@@ -31,7 +31,7 @@
       :root #header + #content > #left > #rlblock_left{
           display:none !important;
       }
-      {{ if .Site.Params.disableInlineCopyToClipBoard }}
+      {{ if site.Params.disableInlineCopyToClipBoard }}
         :not(pre) > code + span.copy-to-clipboard {
             display: none;
         }
@@ -47,9 +47,9 @@
               {{if not .IsHome}}
               <div>
                 <div id="top-bar">
-                {{ if and (or .IsPage .IsSection) .Site.Params.editURL }}
+                {{ if and (or .IsPage .IsSection) site.Params.editURL }}
                   {{ $File := .File }}
-                  {{ $Site := .Site }}
+                  {{ $Site := site }}
                   {{with $File.Path }}
                   <div id="top-github-link">
                     <a class="github-link" title='{{T "Edit-this-page"}}' href="{{ $Site.Params.editURL }}{{ replace $File.Dir "\\" "/" }}{{ $File.LogicalName }}" target="blank">
@@ -70,7 +70,7 @@
                   <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
                   {{ end }}
                   <span class="links">
-                 {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
+                 {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not site.Params.disableBreadcrumb))}}
                  {{if $showBreadcrumb}}
                     {{ template "breadcrumb" dict "page" . "value" .Title }}
                  {{ else }}

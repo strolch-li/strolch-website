@@ -1,20 +1,20 @@
-<nav id="sidebar" class="{{if $.Site.Params.showVisitedLinks }}showVisitedLinks{{end}}">
+<nav id="sidebar" class="{{if site.Params.showVisitedLinks }}showVisitedLinks{{end}}">
 
 {{ $currentNode := . }}
-{{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
+{{ $showvisitedlinks := site.Params.showVisitedLinks }}
   <div id="header-wrapper">
     <div id="header">
       {{ partial "logo.html" . }}
     </div>
-    {{if not .Site.Params.disableSearch}}
+    {{if not site.Params.disableSearch}}
         {{ partial "search.html" . }}
     {{end}}
   </div>
-  {{if not .Site.Params.disableLandingPageButton }}
+  {{if not site.Params.disableLandingPageButton }}
     <section id="homelinks">
       <ul>
         <li>
-            <a class="padding" href='{{ (cond (and (ne .Site.Params.landingPageURL nil) (.Site.IsMultiLingual)) .Site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne .Site.Params.landingPageName nil) .Site.Params.landingPageName "<i class='fas fa-home'></i> Home") }}</a>
+            <a class="padding" href='{{ (cond (and (ne site.Params.landingPageURL nil) (hugo.IsMultilingual)) site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne site.Params.landingPageName nil) site.Params.landingPageName "<i class='fas fa-home'></i> Home") }}</a>
         </li>
       </ul>
     </section>
@@ -23,19 +23,19 @@
     <div class="highlightable">
     <ul class="topics">
 
-        {{if eq .Site.Params.ordersectionsby "title"}}
-          {{range .Site.Home.Sections.ByTitle}}
+        {{if eq site.Params.ordersectionsby "title"}}
+          {{range site.Home.Sections.ByTitle}}
           {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
           {{end}}
         {{else}}
-          {{range .Site.Home.Sections.ByWeight}}
+          {{range site.Home.Sections.ByWeight}}
           {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
           {{end}}
         {{end}}
     </ul>
 
-    {{ $disableShortcutsTitle := .Site.Params.DisableShortcutsTitle}}
-    {{with .Site.Menus.shortcuts}}
+    {{ $disableShortcutsTitle := site.Params.DisableShortcutsTitle}}
+    {{with site.Menus.shortcuts}}
       <section id="shortcuts">
         <h3>{{ if not $disableShortcutsTitle}}{{ T "Shortcuts-Title"}}{{ end }}</h3>
         <ul>
@@ -54,17 +54,17 @@
       </section>
     {{end}}
 
-    {{ if or .Site.IsMultiLingual $showvisitedlinks }}
+    {{ if or hugo.IsMultilingual $showvisitedlinks }}
     <section id="prefooter">
       <hr/>
       <ul>
-      {{ if and .Site.IsMultiLingual (not .Site.Params.DisableLanguageSwitchingButton)}}
+      {{ if and hugo.IsMultilingual (not site.Params.DisableLanguageSwitchingButton)}}
         <li>
           <a class="padding">
             <i class="fas fa-language fa-fw"></i>
           <div class="select-style">
             <select id="select-language" onchange="location = this.value;">
-          {{ $siteLanguages := .Site.Languages}}
+          {{ $siteLanguages := site.Languages}}
           {{ $pageLang := .Page.Lang}}
           {{ range .Page.AllTranslations }}
               {{ $translation := .}}
@@ -134,7 +134,7 @@
           {{end}}
           {{ $pages := ($currentNode.Scratch.Get "pages") }}
 
-        {{if eq .Site.Params.ordersectionsby "title"}}
+        {{if eq site.Params.ordersectionsby "title"}}
           {{ range $pages.ByTitle }}
             {{ if and .Params.hidden (not $.showhidden) }}
             {{else}}

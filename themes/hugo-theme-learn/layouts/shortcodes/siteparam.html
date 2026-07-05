@@ -1,5 +1,5 @@
 {{- $paramName := (.Get 0) -}}
-{{- $siteParams := .Site.Params -}}
+{{- $siteParams := site.Params -}}
 {{- with $paramName -}}
     {{- with $siteParams -}}
         {{- index . (lower $paramName) -}}

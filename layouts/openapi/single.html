@@ -44,7 +44,7 @@
     <div><a id="logo" href="/">
         <img height="64px" src="/logo.png">
     </a>
-        <p> {{ .Site.Title }} RESTful API Documentation</p>
+        <p> {{ site.Title }} RESTful API Documentation</p>
     </div>
     <div>
         <button onclick="window.history.back()">← Back</button>
@@ -57,7 +57,7 @@
 <script>
     window.onload = function () {
         SwaggerUIBundle({
-            url: "{{ .Site.BaseURL }}/schema/strolch-web-rest-openapi-spec.yaml",
+            url: "{{ site.BaseURL }}/schema/strolch-web-rest-openapi-spec.yaml",
             dom_id: "#swagger-ui"
         });
     };

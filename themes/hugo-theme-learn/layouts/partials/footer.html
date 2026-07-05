@@ -9,7 +9,7 @@
         <!-- Next prev page -->
         {{ $currentNode := . }}
 
-        {{ template "menu-nextprev" dict "menu" .Site.Home "currentnode" $currentNode }}
+        {{ template "menu-nextprev" dict "menu" site.Home "currentnode" $currentNode }}
 
         {{ define "menu-nextprev" }}
             {{$currentNode := .currentnode }}
@@ -40,7 +40,7 @@
         {{ end }}
 
 
-	 {{$showPrevNext := (and (not .Params.disableNextPrev) (not .Site.Params.disableNextPrev))}}
+	 {{$showPrevNext := (and (not .Params.disableNextPrev) (not site.Params.disableNextPrev))}}
 	 {{if $showPrevNext}}
 		{{with ($.Scratch.Get "prevPage")}}
 			<a class="nav nav-prev" href="{{.RelPermalink}}" title="{{.Title}}"> <i class="fa fa-chevron-left"></i></a>
@@ -56,23 +56,23 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="{{"js/clipboard.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/perfect-scrollbar.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/perfect-scrollbar.jquery.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/jquery.sticky.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/featherlight.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/highlight.pack.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/clipboard.min.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/perfect-scrollbar.min.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/perfect-scrollbar.jquery.min.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/jquery.sticky.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/featherlight.min.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/highlight.pack.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="{{"js/modernizr.custom-3.6.0.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/learn.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    <script src="{{"js/hugo-learn.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
-    {{ if (or (and (ne .Params.disableMermaid nil) (not .Params.disableMermaid)) (not .Site.Params.disableMermaid)) }}
+    <script src="{{"js/modernizr.custom-3.6.0.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/learn.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    <script src="{{"js/hugo-learn.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+    {{ if (or (and (ne .Params.disableMermaid nil) (not .Params.disableMermaid)) (not site.Params.disableMermaid)) }}
         {{ if isset .Params "customMermaidURL" }}
             <script src="{{ .Params.customMermaidURL }}"></script>
-        {{ else if isset .Site.Params "customMermaidURL" }}
-            <script src="{{ .Site.Params.customMermaidURL }}"></script>
+        {{ else if isset site.Params "customMermaidURL" }}
+            <script src="{{ site.Params.customMermaidURL }}"></script>
         {{ else }}
-            <script src="{{"mermaid/mermaid.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
+            <script src="{{"mermaid/mermaid.js" | relURL}}{{ if not site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
         {{ end }}
         <script>
             mermaid.initialize({ startOnLoad: true });
