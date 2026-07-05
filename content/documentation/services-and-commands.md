@@ -4,65 +4,61 @@ weight: 70
 ---
 
 ## Services and Commands
-`Services` are written to implement a specific use-case. `Commands` are written to 
-implement re-usable parts of a use-case. The use-case can be abstract 
-e.g., `AddResourceService` or very specific e.g. `CreatePatientService`.
 
-Should the use-case be re-usable in different scenarios, then commands should 
-implement the logic, and the services should then execute the commands. E.g. 
-The `CreatePatientService` would use a `CreatePatientResourceCommand` and then 
-use an `AddResourceCommand` in a single transaction, so that the task of 
-creating the actual Patient Resource can be re-used somewhere else.
+`Services` are the primary entry points for business logic in Strolch. They are designed to be called from REST resources, UIs, or other high-level components. `Commands` are atomic, reusable operations that are performed within a transaction.
 
-Services extend the abstract class `AbstractService` and then implement the 
-method `internalDoService(ServiceArgument)`. AbstractService defines generic 
-template arguments with which the concrete service can define a specific 
-input ServiceArgument class and output ServiceResult class.
+### Services
 
-The AbstractService class has multiple helper methods:
-* `openTx():StrolchTransaction` - to open a transaction
-* `runPrivileged()` - to perform a `SystemUserAction`
-* `getComponent():V` - to retrieve a specific StrolchComponent
+Services extend the abstract class `AbstractService<T, U>` and then implement the method `internalDoService(T arg)`. `T` is the argument type (extending `ServiceArgument`) and `U` is the result type (extending `ServiceResult`).
 
-there are more - check the JavaDocs.
+Key responsibilities of `AbstractService`:
+*   **Transaction management**: It facilitates opening and closing transactions.
+*   **Privilege checking**: It ensures the user has the necessary permissions.
+*   **Result handling**: It ensures a consistent result object is returned.
 
-Commands extend the `Command` class and then implement the method `doCommand()`. 
+The `AbstractService` class has multiple helper methods:
+*   `openTx(String realm)`: Opens a transaction for the given realm.
+*   `openArgOrUserTx(ServiceArgument arg)`: Opens a transaction based on the argument.
+*   `runPrivileged(PrivilegedRunnable runnable)`: Performs a task with system privileges.
+*   `getComponent(Class<V> clazz)`: Retrieves a specific `StrolchComponent`.
+
+#### Service Result
+
+Services return a `ServiceResult` (or a subclass). It indicates whether the operation was successful and carries any result data or error messages.
+
+*   `ServiceResult.success()`: Returns a successful result.
+*   `ServiceResult.error(String msg)`: Returns an error result with a message.
+
+### Commands
+
+Commands extend the `Command` class and implement the method `doCommand()`. They are used within a transaction to perform a specific task.
+
+Key methods to implement:
+*   `validate()`: Perform pre-condition checks.
+*   `doCommand()`: The actual logic.
+*   `undo()`: Optional. Logic to revert changes if the transaction is rolled back.
+
 Commands have helper methods:
-* `tx()` - to get the current transaction
-* `getPolicy()` - to retrieve a `StrolchPolicy` instance
-* `runPrivileged()` - to perform a `SystemUserAction`
+*   `tx()`: To get the current transaction.
+*   `getPolicy(Class<V> clazz, PolicyDef policyDef)`: To retrieve a `StrolchPolicy` instance.
 
-there are more - check the JavaDocs.
+### Example: Adding an Order
 
-The following code snippets shows how a Service and Command are used to 
-perform the task of adding a new Order. Note how:
-* the Service opens the transaction
-* adds the command to the TX
-* calls `tx.commitOnClose()`
-* the command validates its input
-* locks the object
-* performs the work
-* and implements an undo
+The following code snippets shows how a Service and Command are used to perform the task of adding a new Order.
 
-AddOrderService:
+**AddOrderService**:
+
 ```java
 public class AddOrderService extends AbstractService<AddOrderService.AddOrderArg, ServiceResult> {
 
   @Override
-  protected ServiceResult getResultInstance() {
-    return new ServiceResult();
-  }
-
-  @Override
-  protected ServiceResult internalDoService(AddOrderArg arg) {
-
+  protected ServiceResult internalDoService(AddOrderArg arg) throws Exception {
     try (StrolchTransaction tx = openTx(arg.realm)) {
-      AddOrderCommand command = new AddOrderCommand(getContainer(), tx);
+      AddOrderCommand command = new AddOrderCommand(tx);
       command.setOrder(arg.order);
       tx.addCommand(command);
       tx.commitOnClose();
     }
-
     return ServiceResult.success();
   }
 
@@ -72,14 +68,15 @@ public class AddOrderService extends AbstractService<AddOrderService.AddOrderArg
 }
 ```
 
-AddOrderCommand:
+**AddOrderCommand**:
+
 ```java
 public class AddOrderCommand extends Command {
 
   private Order order;
 
-  public AddOrderCommand(ComponentContainer container, StrolchTransaction tx) {
-    super(container, tx);
+  public AddOrderCommand(StrolchTransaction tx) {
+    super(tx);
   }
 
   public void setOrder(Order order) {
@@ -93,13 +90,11 @@ public class AddOrderCommand extends Command {
 
   @Override
   public void doCommand() {
-
     tx().lock(this.order);
 
     OrderMap orderMap = tx().getOrderMap();
     if (orderMap.hasElement(tx(), this.order.getType(), this.order.getId())) {
-      String msg = MessageFormat.format("The Order {0} already exists!", this.order.getLocator());
-      throw new StrolchException(msg);
+      throw new StrolchUserMessageException("The Order already exists!");
     }
 
     orderMap.add(tx(), this.order);
@@ -115,3 +110,11 @@ public class AddOrderCommand extends Command {
   }
 }
 ```
+
+### Generic CRUD Services
+
+Strolch provides a set of generic services for standard operations:
+
+*   `AddResourceService`, `UpdateResourceService`, `RemoveResourceService`
+*   `AddOrderService`, `UpdateOrderService`, `RemoveOrderService`
+*   `AddOrUpdateStrolchRootElementService`: Handles adding or updating any root element automatically.

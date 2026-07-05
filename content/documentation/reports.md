@@ -80,10 +80,34 @@ This report
 * joins in the resource of type `Team`
 * Uses the `GenericReport` class to generate the report
 
-## GenericReport
+## Using the Report API
 
-The default generic report implemented in Strolch has the following features and
-options:
+Reports can be executed programmatically within a transaction.
+
+```java
+try (Report report = new Report(tx, "stockReport")) {
+    // Optional: add programmatically filters
+    report.filter("Product", "product_1", "product_2");
+    
+    // Optional: add date range
+    report.dateRange(new DateRange().from(start, true).to(end, true));
+
+    // Execute report
+    Stream<ReportElement> result = report.doReport();
+    
+    // Process as JSON
+    Stream<JsonObject> jsonResult = report.doReportAsJson();
+}
+```
+
+### Key Java API Methods
+
+- **`doReport()`**: Returns a `Stream<ReportElement>` containing the report data.
+- **`doReportWithPage(offset, limit)`**: Executes the report and returns a paginated stream.
+- **`doReportAsJson()`**: Returns the results as a stream of GSON `JsonObject`s.
+- **`generateFilterCriteria(limit)`**: Returns a map of possible values for each filterable column (facets).
+- **`filter(type, ids)`**: Programmatically adds a filter.
+- **`dateRange(dateRange)`**: Sets the date range for the report.
 
 ### Parameters
 

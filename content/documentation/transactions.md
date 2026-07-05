@@ -1,81 +1,132 @@
 ---
-title: 'Transactions' 
+title: 'Transactions'
 weight: 90
 ---
 
 ## Transactions
 
-Strolch Transactions play a central role in a Strolch agent. A transaction is
-opened for a realm, and grants access to the model of the agent. Transactions
-are implemented as a Java `try-with-resources` by implementing
-the `AutoCloseable`
-interface. This makes it trivial to understand the scope of a transaction.
+Strolch Transactions play a central role in a Strolch agent. A transaction is opened for a realm, and grants access to the model of the agent. Transactions are implemented as a Java `try-with-resources` by implementing the `AutoCloseable` interface. This makes it trivial to understand the scope of a transaction.
 
 Transactions handle the following:
 
-* Opening and closing database connections
-* Releasing locks to strolch elements, if `tx.lock(StrolchRootElement)` or
-  `tx.lock(Locator)` was called
-* Performing Commands by executing them in the added order, and validating them
-  first.
-* Exception handling
-* Auditing
-* Updating observers
+*   Opening and closing database connections
+*   Releasing locks to strolch elements
+*   Performing Commands by executing them in the added order, and validating them first
+*   Exception handling
+*   Auditing
+*   Updating observers
 
-When a transaction is opened, it is by default read-only, i.e. does not perform
-any commands when it is closed. Should the TX perform commands, then it is
-important to call `tx.commitOnClose()`, but only at the end of the work, so that
-exception handling can properly work if something goes wrong.
+### Opening a Transaction
 
-`StrolchTransaction` offers a myriad of methods:
+Transactions are opened via the `StrolchAgent` or a `StrolchComponent`.
 
-* find element by its `Locator`
-* get methods for elements by type and id, or using a `StringParameter` or
-  `StringListParameter` references
-* methods to add, update or remove elements
-* assert privilege access
-* get a new element by its template
-* check if an element exists by type and id
-* get streams for elements
-* add commands for execution
+```java
+try (StrolchTransaction tx = agent.openTx(certificate, "MyAction", readOnly)) {
+    // Perform operations
+}
+```
 
-Transactions are opened by accessing the realm, but there are convenience
-methods depending on the use-case:
+*   **`certificate`**: Identifies the user and their privileges.
+*   **`action`**: A string naming the action, used for auditing and logging.
+*   **`readOnly`**: A boolean flag.
+    *   If `true`, the transaction is strictly read-only. Any attempt to modify the model or add commands will throw an exception.
+    *   If `false`, the transaction is writeable.
 
-* In Services: by calling one of the `openTx()`-methods
-* In Commands: Transactions are already open, use method `tx()` to get instance.
-* REST API: `RestfulStrolchComponent.openTx()`
+Transactions are opened by accessing the realm, but there are convenience methods depending on the use-case:
+
+*   In **Services**: by calling one of the `openTx()`-methods.
+*   In **Commands**: Transactions are already open, use method `tx()` to get instance.
+*   **REST API**: `RestfulStrolchComponent.openTx()`.
 
 {{% notice warning %}}
 Note: don't open a new TX inside a TX for the same realm!
 {{% /notice %}}
 
-Important is to always open the transaction as a `try-with-resource` block and to
-define if the TX should commit, or not:
+### Transaction Outcome and Best Practices
+
+For writeable transactions where changes are made, you **must** explicitly define the outcome. If a transaction is closed with uncommitted changes, an exception will be thrown.
+
+The recommended pattern for writeable transactions is:
+
 ```java
-try (StrolchTransaction tx = openTx(...)) {
+try (StrolchTransaction tx = agent.openTx(certificate, "UpdateResource", false).rollbackOnFailure()) {
+    // ... perform operations ...
+    tx.commitOnClose();
+}
+```
 
-  // read lock our object
-  Locator ferrariLoc = Resource.locatorFor("Car", "ferrari");
-  tx.lock(ferrariLoc);
+*   `rollbackOnFailure()`: Configures the transaction to automatically roll back if an exception occurs. This avoids the "modified elements which will not be committed" exception that can mask the original error.
+*   `commitOnClose()`: Must be called at the end of the block to ensure all changes (added/updated/removed elements and commands) are persisted when the transaction closes successfully.
+*   `rollbackOnClose()`: Can be used to explicitly roll back all changes upon closing.
 
-  // find a car by locator
-  Resource ferrari = tx.findElement(ferrariLoc);
+### Interacting with the Model
 
-  // get a car by ID
+While `StrolchTransaction` provides access to `ResourceMap`, `OrderMap`, and `ActivityMap`, **these should never be used directly**. Instead, use the convenience methods provided by the `StrolchTransaction` class.
+
+#### Retrieving and Finding Elements
+*   `getResourceBy(type, id, assertExists)` / `getOrderBy(...)` / `getActivityBy(...)`: Retrieves a root element.
+*   `getResourceBy(StringParameter refP, assertExists)`: Retrieves an element referenced by a parameter.
+*   `findElement(locator)`: Finds any element (Resource, Order, Activity, Bag, Parameter, etc.) by its locator.
+*   `findParameterOnHierarchy(element, parentParamKey, bagKey, paramKey)`: Searches for a parameter up a defined hierarchy (e.g., following relations).
+
+#### Modifying Elements
+*   `add(element)`: Adds a new root element.
+*   `update(element)`: Updates an existing root element.
+*   `remove(element)`: Removes a root element.
+*   `addOrUpdate(element)`: Adds the element if it doesn't exist, otherwise updates it.
+
+### Locking
+
+Strolch uses a locking mechanism to ensure thread safety. **Elements are never locked automatically upon retrieval.** You must explicitly lock elements you intend to modify.
+
+*   `tx.lock(element)` or `tx.lock(locator)`: Acquires a lock on the specified element.
+*   `tx.readLock(element)`: **Recommended when modifying.** This method acquires a lock and then retrieves a *fresh copy* of the element from the database, ensuring you are working with the latest data under lock.
+
+### Commands
+
+Complex or reusable business logic should be encapsulated in `Command` objects and added to the transaction. Commands are validated and executed when the transaction is flushed or committed.
+
+The recommended pattern is to instantiate the command, configure it, and then add it to the transaction:
+
+```java
+try (StrolchTransaction tx = openTx(certificate, "MyAction", false).rollbackOnFailure()) {
+    MyCommand command = new MyCommand(tx);
+    command.setArg1(value1);
+    
+    // add to TX for execution on commit
+    tx.addCommand(command);
+
+    tx.commitOnClose();
+}
+```
+
+Two lifecycle methods are available for commands:
+*   `command.validate()`: Called automatically before execution to verify preconditions.
+*   `command.doCommand()`: Called automatically to perform the business logic.
+
+### Auditing and Privileges
+
+*   **Auditing**: All write operations are automatically audited if enabled. Auditing can be suppressed for specific transactions using `tx.suppressAudits()`.
+*   **Privilege Assertions**: Use the transaction to verify user permissions:
+    *   `tx.assertHasPrivilege(Operation.UPDATE, resource)`: Throws `AccessDeniedException` if the user lacks the privilege.
+
+### Full Example
+
+```java
+try (StrolchTransaction tx = openTx(certificate, "ModifyCar", false).rollbackOnFailure()) {
+
+  // get a car by ID and lock it
   Resource opel = tx.getResourceBy("Car", "opel", true);
+  tx.lock(opel);
 
-  // modify ball
+  // modify car
   opel.setName("Opel Corsa");
   tx.update(opel);
-
-  // get by string reference
-  StringParameter ownerP = ferrari.getParameter("relations", "owner", true);
-  Resource owner = tx.getResourceBy(ownerP, true);
-
-  // get by string list reference
-  StringListParameter previousOwnersP = opel.getParameter("relations", "previousOwners", true);
-  List<Resource> previousOwners = tx.getResourcesBy(previousOwnersP, true);
+  
+  // Alternative: use readLock to get a fresh copy and lock in one go
+  Resource ferrari = tx.readLock(Resource.locatorFor("Car", "ferrari"));
+  ferrari.setName("Ferrari F40");
+  tx.update(ferrari);
 
   // check resource exists
   if (tx.hasResource("Car", "audi")) {
@@ -93,8 +144,7 @@ try (StrolchTransaction tx = openTx(...)) {
   	logger.info("Car: " + car.getId());
   });
 
-  // commit if TX was changed
-  if (tx.needsCommit())
-    tx.commitOnClose();
+  // commit the changes
+  tx.commitOnClose();
 }
 ```

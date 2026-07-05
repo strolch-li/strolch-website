@@ -5,8 +5,8 @@ weight: 40
 
 ## Runtime Configuration
 A Strolch runtime configuration comprises two parts: a configuration part, and 
-a model part. The configuration are files located in the `..config/` folder, 
-and the model are files located in the `../data` folder.
+a model part. The configuration is defined by files located in the `../config/` folder, 
+and the model is defined by files located in the `../data` folder.
 
 In an absolute minimal configuration, the Strolch runtime requires the 
 following folder structure:
@@ -16,6 +16,41 @@ following folder structure:
   *  `../PrivilegeConfig.xml` → configures user management
   *  `../PrivilegeUsers.xml` → contains the users in an XML based user management file
   *  `../PrivilegeRoles.xml` → contains the roles and privileges in an XML based user management
+
+## Strolch Agent Runtime
+
+The Strolch Agent is the core runtime of the Strolch framework. It manages the lifecycle of components, handles configuration, and provides access to the Strolch Container.
+
+### StrolchAgent
+
+The `StrolchAgent` class is the central entry point. It provides methods to:
+*   Access components via the `ComponentContainer`.
+*   Open transactions (`StrolchTransaction`).
+*   Run code with specific privileges (`runAs`, `runAsAgent`).
+*   Access executor services for asynchronous tasks.
+*   Retrieve system state and version information.
+*   Access `AgentStatistics` for performance metrics.
+
+### AgentStatistics
+
+The `AgentStatistics` class tracks various performance metrics of the Strolch Agent. These statistics are useful for monitoring and identifying performance bottlenecks.
+
+Tracked metrics include:
+*   **Transactions**: Number and duration of successful transactions.
+*   **Failed Transactions**: Number and duration of failed transactions.
+*   **Searches**: Number and duration of search operations.
+*   **Services**: Number and duration of service executions.
+*   **Logons**: Number of logons and current active users.
+*   **Retried Locks**: Number of times a lock was retried.
+
+To access the statistics:
+
+```java
+AgentStatistics stats = agent.getAgentStatistics();
+JsonObject json = stats.toJson();
+```
+
+The statistics are also available via the REST API if the management components are enabled.
 
 ## StrolchConfiguration.xml
 
@@ -31,6 +66,11 @@ The StrolchConfiguration.xml file configures the Strolch agent. The StrolchConfi
       * `<locale>` the agent's internal locale for log messages etc.
       * `<verbose>` the logging level for some internal logging. (Logging is 
         mostly done using log4j over slf4j)
+  * `<Runtime>` properties for **Temporary File Retention**:
+    * `<temp.retention.default>`: ISO-8601 duration for default retention (e.g. `P3M`).
+    * `<temp.retention.<prefix>>`: Retention for specific subdirectories in `tempPath`.
+    * `<temp.retention.keep.default>`: Minimum number of files to keep.
+    * `<temp.retention.delete.enabled>`: Set to `true` to enable actual deletion.
   * `<Component>` elements for each component used in the agent. A component 
     is configured by defining the following child elements:
     * `<name>` the name of the component, use when defining dependencies 

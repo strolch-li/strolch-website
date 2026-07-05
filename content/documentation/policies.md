@@ -5,69 +5,85 @@ weight: 100
 
 ## Policies
 
-Policies are an integral part when writing business logic in Strolch. In many
-cases it would suffice to write all such logic in `Services` and `Commands`, but
-as soon as behaviour can change, depending on the element being accessed, then
+Policies are an integral part when writing business logic in Strolch. In many cases it would suffice to write all such
+logic in `Services` and `Commands`, but as soon as behaviour can change, depending on the element being accessed, then
 this would quickly lead to many if/else blocks.
 
-Since writing large if/else blocks is not maintanable in the long run, Strolch
-offers a different approach. All Strolch elements can store Policy definitions.
-This is a simple key/value store where the key defines the type of policy, and
+Since writing large if/else blocks is not maintainable in the long run, Strolch offers a different approach. All Strolch
+elements can store Policy definitions. This is a simple key/value store where the key defines the type of policy, and
 the value references the policy to use.
 
-Currently there are two ways to reference a policy in Strolch, either via a key
-which defines a further lookup in the `PolicyHandler`, or directly as the name
-of the class to instantiate.
+The `PolicyHandler` is Strolch's mechanism for dependency injection and extensibility. It allows defining
+interchangeable logic that can be selected at runtime based on the data model.
 
-Using policies in Strolch gives the additional possibility of easily changing
-the behaviour at runtime, as a Service and/or Command would delegate the
-behaviour to the currently configured policy on the releveant element.
+### Concepts
 
-Policies are implemented by defining an abstract class and extends
-StrolchPolicy. This abstract class then defines the API of the actual policy. A
-concrete class then extends this abstract class and implements the concrete
-methods.
+- **Policy Definition (`PolicyDef`)**: A reference to a policy type and a key.
+- **Policy Implementation (`StrolchPolicy`)**: The actual Java class that implements the logic.
+- **Policy Configuration**: Policies are configured in an XML file (e.g., `StrolchPolicies.xml`) or within the element's
+  XML definition.
 
-Policies are registered on Resources, Orders, Activities and Actions. The
-following shows defining two policies on a Resource, a PlanningPolicy, an
-ExecutionPolicy in XML:
+Currently there are two ways to reference a policy in Strolch, either via a key which defines a further lookup in the
+`PolicyHandler`, or directly as the name of the class to instantiate.
+
+### Defining a Policy
+
+Policies are registered on Resources, Orders, Activities and Actions. The following shows defining two policies on a
+Resource, a PlanningPolicy and an ExecutionPolicy in XML:
 
 ```xml
+
 <Resource Id="myResource" Name="My Resource" Type="MyType">
-  ...
-  <Policies>
-    <Policy Type="PlanningPolicy" Value="key:SimplePlanning" />
-    <Policy Type="ExecutionPolicy" Value="java:li.strolch.policytest.TestSimulatedExecutionPolicy" />
-  </Policies>
+    ...
+    <Policies>
+        <Policy Type="PlanningPolicy" Value="key:SimplePlanning"/>
+        <Policy Type="ExecutionPolicy" Value="java:li.strolch.policytest.TestSimulatedExecutionPolicy"/>
+    </Policies>
 </Resource>
 ```
 
-{{% notice tip %}} Note how the `PlanningPolicy` has a value of `key:SimplePlanning`
-and the `ExecutionPolicy` defines a reference to an actual class. {{% /notice %}}
+{{% notice tip %}} Note how the `PlanningPolicy` has a value of `key:SimplePlanning` and the `ExecutionPolicy` defines a
+reference to an actual class. {{% /notice %}}
 
-To use the `PolicyHandler`, it must be configured in the `StrolchConfiguration.xml`
-as follows:
+### Implementing a Policy
 
-```xml
-<StrolchConfiguration>
-    <env id="dev">
-        <Component>
-            <name>PolicyHandler</name>
-            <api>li.strolch.policy.PolicyHandler</api>
-            <impl>li.strolch.policy.DefaultPolicyHandler</impl>
-            <Properties>
-                <readPolicyFile>true</readPolicyFile>
-                <policyConfigFile>StrolchPolicies.xml</policyConfigFile>
-            </Properties>
-        </Component>
-    </env>
-</StrolchConfiguration>
+To implement a policy, define an abstract class that extends `StrolchPolicy` and defines the API. A concrete class then
+extends this and implements the logic.
+
+```java
+public class MyExecutionPolicy extends StrolchPolicy implements ExecutionPolicy {
+	public MyExecutionPolicy(StrolchTransaction tx) {
+		super(tx);
+	}
+
+	@Override
+	public void execute(IActivityElement element) {
+		// Implementation logic
+	}
+}
 ```
 
-And this policy handler implementation requires a file where the lookups for the
-policies is defined, e.g.:
+### Configuration
+
+To use the `PolicyHandler`, it must be configured in the `StrolchConfiguration.xml`:
 
 ```xml
+
+<Component>
+    <name>PolicyHandler</name>
+    <api>li.strolch.policy.PolicyHandler</api>
+    <impl>li.strolch.policy.DefaultPolicyHandler</impl>
+    <Properties>
+        <readPolicyFile>true</readPolicyFile>
+        <policyConfigFile>StrolchPolicies.xml</policyConfigFile>
+    </Properties>
+</Component>
+```
+
+The `StrolchPolicies.xml` file defines the lookups:
+
+```xml
+
 <StrolchPolicies>
     <PolicyType Type="PlanningPolicy" Api="li.strolch.policytest.TestPlanningPolicy">
         <Policy Key="SimplePlanning" Class="li.strolch.policytest.TestSimplePlanningPolicy"/>
@@ -75,31 +91,45 @@ policies is defined, e.g.:
     <PolicyType Type="ExecutionPolicy" Api="li.strolch.execution.policy.ExecutionPolicy">
         <Policy Key="SimulatedExecution" Class="li.strolch.execution.policy.RandomDurationExecution"/>
     </PolicyType>
-    <PolicyType Type="ConfirmationPolicy" Api="li.strolch.policytest.TestConfirmationPolicy">
-        <Policy Key="NoConfirmation" Class="li.strolch.policytest.TestNoConfirmationPolicy"/>
-    </PolicyType>
 </StrolchPolicies>
 ```
 
-Now at runtime we can access the policies:
+### Using a Policy
+
+Policies are retrieved within a transaction.
 
 ```java
-public class MyService extends AbstractService<ServiceArgument, ServiceResult> {
-	@Override
-	protected ServiceResult internalDoService(ServiceArgument arg) throws Exception {
-		try (StrolchTransaction tx = openArgOrUserTx(arg)) {
-			Resource res = tx.getResourceBy("MyType", "myTestResource");
+try (StrolchTransaction tx = openArgOrUserTx(arg)) {
+    Resource res = tx.getResourceBy("MyType", "myTestResource");
 
-			PlanningPolicy planningPolicy = tx.getPolicy(res, PlanningPolicy.class);
-			planningPolicy.plan(...);
+    PlanningPolicy planningPolicy = tx.getPolicy(res, PlanningPolicy.class);
+    planningPolicy.plan(...);
 
-			ExecutionPolicy executionPolicy = tx.getPolicy(res, ExecutionPolicy.class);
-			executionPolicy.toExecution(...);
+    ExecutionPolicy executionPolicy = tx.getPolicy(res, ExecutionPolicy.class);
+    executionPolicy.toExecution(...);
 
-			tx.commitOnClose();
-		}
-
-		return ServiceResult.success();
-	}
+    tx.commitOnClose();
 }
+```
+
+#### Retrieving a Policy without an Element
+
+Sometimes you need a policy that is not directly attached to a model element. In this case, you can create a `PolicyDef`
+manually.
+
+```java
+PolicyDef policyDef = PolicyDef.getKeyPolicy(ExecutionPolicy.class, "DefaultExecution");
+ExecutionPolicy policy = tx.getPolicy(ExecutionPolicy.class, policyDef);
+```
+
+Alternatively, you can use `PolicyDef.valueOf()`:
+
+```java
+PolicyDef policyDef = PolicyDef.valueOf(ExecutionPolicy.class, "key:DefaultExecution");
+```
+
+Or reference a Java class directly:
+
+```java
+PolicyDef policyDef = PolicyDef.getJavaPolicy(ExecutionPolicy.class, MyExecutionPolicy.class);
 ```

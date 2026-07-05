@@ -1,6 +1,6 @@
 ---
 title: 'Architecture'
-weight: 10
+weight: 30
 ---
 
 ## Architecture

@@ -87,13 +87,37 @@ Let's go through this model:
   ParameterBag. This bag of parameters is used to store the per article quantity
   for this order. With ParameterBags, you can eliminate the use of simple
   aggregate classes, as is commonly used in object-oriented programming.
-* The `Customer` element models an `address` ParameterBag to store the address of a
-  customer. Using a separate bag allows for further more direct fields to stored
-  on the default parameters bag.
+### Activity and Action
 
-Now that we have a basic understanding of te model, it is of far more interest
-in how to create and interact with these elements at runtime. The following
-listing will perform simple operations:
+While Resources and Orders represent static and transactional data, Activities and Actions are used to model processes and execution.
+
+*   **`Activity`**: A hierarchical container for other Activities or Actions. It defines a process tree (e.g., a production order with multiple steps).
+*   **`Action`**: The atomic unit of work within an activity. It represents a single task to be performed.
+
+Actions have a **State** that progresses through a lifecycle:
+`Created` → `Planned` → `Execution` → `Stopped` → `Executed`
+
+Each Action is associated with a **Resource**, representing the entity performing the work or being affected by it.
+
+**Example Activity XML**:
+
+```xml
+<Activity Id="productionProcess" Name="Production Process" Type="Series">
+  <Action Id="setupMachine" Name="Setup Machine" ResourceId="machine1" ResourceType="Machine" Type="Setup">
+    <ParameterBag Id="objectives" Name="Objectives" Type="Parameters">
+      <Parameter Id="duration" Name="Duration" Type="Duration" Value="PT10M"/>
+    </ParameterBag>
+  </Action>
+  <Action Id="produceParts" Name="Produce Parts" ResourceId="machine1" ResourceType="Machine" Type="Production">
+    <ParameterBag Id="objectives" Name="Objectives" Type="Parameters">
+      <Parameter Id="quantity" Name="Quantity" Type="Float" Value="100"/>
+      <Parameter Id="duration" Name="Duration" Type="Duration" Value="PT1H"/>
+    </ParameterBag>
+  </Action>
+</Activity>
+```
+
+Now that we have a basic understanding of the model, it is of far more interest in how to create and interact with these elements at runtime. The following listing will perform simple operations:
 
 ```java
 public class Example {
