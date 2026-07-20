@@ -19,8 +19,8 @@ DELETE ../rest/books/{id}
 Thus corresponding with querying, getting, creating, updating and removing of
 books. So let's go ahead and add these REST APIs to our project.
 
-Our project is using JAX-RS 2.0 as the API and Jersey 2.x as the implementation,
-thus first we need to configure JAX-RS. Thus create the following class:
+Our project is using Jakarta RS 4.0 as the API and Jersey 3.x as the implementation,
+thus first we need to configure Jakarta RS. Thus create the following class:
 
 ```java
 @ApplicationPath("rest")
@@ -29,24 +29,11 @@ public class RestfulApplication extends ResourceConfig {
   public RestfulApplication() {
 
     // add strolch resources
-    register(AuthenticationService.class);
-    register(ModelQuery.class);
-	register(Inspector.class);
+    registerClasses(StrolchRestfulClasses.getRestfulClasses());
+    registerClasses(StrolchRestfulClasses.getProviderClasses());
 
     // add project resources by package name
     packages(BooksResource.class.getPackage().getName());
-
-    // filters
-    register(AuthenticationRequestFilter.class, Priorities.AUTHENTICATION);
-    register(AccessControlResponseFilter.class);
-    register(AuthenticationResponseFilter.class);
-    register(HttpCacheResponseFilter.class);
-
-    // log exceptions and return them as plain text to the caller
-    register(StrolchRestfulExceptionMapper.class);
-
-    // the JSON generated is in UTF-8
-    register(CharsetResponseFilter.class);
 
     RestfulStrolchComponent restfulComponent = RestfulStrolchComponent.getInstance();
     if (restfulComponent.isRestLogging()) {
@@ -60,7 +47,7 @@ public class RestfulApplication extends ResourceConfig {
 }
 ```
 
-As we add new resources they will be automatically since we register the entire package.
+As we add new resources they will be automatically registered since we register the entire package.
 
 Now add the books resource class:
 
@@ -101,6 +88,9 @@ public class BookShopConstants {
 
   public static final String TYPE_BOOK = "Book";
 
+  public static final String BAG_PARAMETERS = "parameters";
+  public static final String PARAM_DESCRIPTION = "description";
+
 }
 ```
 
@@ -118,13 +108,13 @@ type of search. Book entities are Resources, thus we will be creating a
 search looks as follows:
 
 ```java
-public class BooksSearch<U> extends ResourceSearch<U> {
+public class BookSearch extends ResourceSearch {
   public BookSearch() {
     types(TYPE_BOOK);
   }
 
   public BookSearch stringQuery(String value) {
-    if (isEmpty(value))
+    if (StringHelper.isEmpty(value))
       return this;
 
     // split by spaces

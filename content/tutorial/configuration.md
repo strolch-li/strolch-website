@@ -31,30 +31,27 @@ just show you a working POM file:
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
         <buildTimestamp>${maven.build.timestamp}</buildTimestamp>
 
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>24</jdk.version>
 
-        <jersey.version>2.25.1</jersey.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <logback.version>1.2.3</logback.version>
-        <petitparser.version>2.1.0</petitparser.version>
-        <hikaricp.version>4.0.3</hikaricp.version>
-        <postgresql.version>42.1.4</postgresql.version>
-        <gson.version>2.8.2</gson.version>
-        <annotation.version>1.3.1</annotation.version>
-        <javaxmail.version>1.6.0</javaxmail.version>
-        <serverlet.version>3.1.0</serverlet.version>
-        <jaxrs.api.version>2.1</jaxrs.api.version>
+        <jersey.version>3.1.11</jersey.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <logback.version>1.5.32</logback.version>
+        <gson.version>2.12.1</gson.version>
+        <hikaricp.version>6.2.1</hikaricp.version>
+        <postgresql.version>42.7.11</postgresql.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
+        <jakarta.ws.rs-api.version>4.0.0</jakarta.ws.rs-api.version>
+        <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 
-        <junit.version>4.12</junit.version>
-        <hamcrest.version>1.3</hamcrest.version>
-        <mockito.version>2.0.8-beta</mockito.version>
+        <junit.version>4.13.2</junit.version>
+        <hamcrest.version>2.2</hamcrest.version>
 
-        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
-        <maven-war-plugin.version>3.1.0</maven-war-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
 
-        <strolch.version>1.8.5</strolch.version>
+        <strolch.version>2.7.0-SNAPSHOT</strolch.version>
 
         <warFinalName>bookshop</warFinalName>
         <m2eclipse.wtp.contextRoot>${warFinalName}</m2eclipse.wtp.contextRoot>
@@ -78,37 +75,37 @@ just show you a working POM file:
         <!-- strolch -->
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.utils</artifactId>
+            <artifactId>strolch-utils</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.privilege</artifactId>
+            <artifactId>strolch-privilege</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.model</artifactId>
+            <artifactId>strolch-model</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.agent</artifactId>
+            <artifactId>strolch-agent</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.rest</artifactId>
+            <artifactId>strolch-web-rest</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.service</artifactId>
+            <artifactId>strolch-service</artifactId>
             <version>${strolch.version}</version>
         </dependency>
         <dependency>
             <groupId>li.strolch</groupId>
-            <artifactId>li.strolch.testbase</artifactId>
+            <artifactId>strolch-test-base</artifactId>
             <version>${strolch.version}</version>
             <scope>test</scope>
         </dependency>
@@ -122,15 +119,15 @@ just show you a working POM file:
 
         <!-- web -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${serverlet.version}</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${jakarta.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>${jaxrs.api.version}</version>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>${jakarta.ws.rs-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
@@ -731,9 +728,9 @@ WAR is deployed and started. In your IDE create a new class as follows:
 ```java
 package li.strolch.bookshop.web;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import java.io.InputStream;
 
 import li.strolch.agent.api.StrolchAgent;
