@@ -1,84 +1,64 @@
 ---
-title: Strolch Overview
+title: Strolch
 ---
 
-![strolch_mascot_head.png](assets/images/strolch_mascot_hero.svg)
+<p align="center">
+  <img src="assets/images/strolch_mascot_hero.svg" alt="Strolch Mascot" width="400">
+</p>
 
-## Strolch Overview
+# The Agile Parameterized Framework
 
-Strolch is framework for developing Software. It's main features are:
+Strolch is a unique Java framework designed for rapid development of robust, data-centric applications. It moves away from traditional Object-Relational Mapping (ORM) and instead uses a powerful abstract model that fits almost any domain.
 
-* Complete persisted data model:
-  * Parameters and values by time 
-  *  Resources, Orders with arbitrary parameter grouping 
-  *  Activity/Action hierarchy with arbitrary depth
-  *  Policies for delegation
-  *  JSON as well as XML transformation
-  *  Locator API
-* Transactions with pessimistic locking and optional read-locking
-* Search API
-* Component based
-* Deeply integrated privilege handling
-* Fully in-memory
-* Persisted auditing, versioning, operations log
-* DAOs for file system or PostgreSQL, easily extended
-* Execution framework
-* Service / Command oriented
-* Reporting API configured by Resource objects
-* REST API for data access
-* WebComponents UI for
-  * Inspector
-  * Users
-  * Roles
-  * Operations Log
-  * Login Screen
-  * Jobs
-* runs on plain old Java SE
+### Why Strolch?
 
-## Strolch Intro
-It is a different framework to Spring and other similar type of Java 
-frameworks, as the model is defined as an abstract model, where you 
-always have the same three types of objects: Resources, Orders and 
-Activities. The fields are mapped as Parameter objects, of which the 
-important primitives are available.
+*   **⚡ Rapid Development**: Define your data model in XML and start building business logic immediately.
+*   **🧩 Simple Abstract Model**: Everything is a Resource, an Order, or an Activity.
+*   **💾 Flexible Persistence**: Transparently switch between PostgreSQL, XML, or even transient in-memory storage.
+*   **🔒 Built-in Security**: Multi-client (realm) support and fine-grained privilege handling are core features.
+*   **🚀 In-Memory Speed**: Enjoy the performance of in-memory data access with the reliability of persisted storage.
 
-The nice part about this framework is, that you can be up and ready in 
-a matter of minutes, and start building your project immediately in 
-that you open your favourite XML editor and start modelling your data.
+---
 
-Once your data is defined, you write your business logic in the form 
-of Services, Commands and Searches. There are many predefined services 
-and commands to manipulate the object model, so that you write your own 
-services when you need to enforce special business rules.
+### Core Concepts
 
-Through the use of Policy objects, you decouple algorithms from your 
-object model, so that at runtime you can change the behaviour, or 
-easily implement different behaviour depending on your use-case. For 
-instance you might have a simple billing service which performs a few 
-preparatory steps, and then calls the configured billing policy to 
-execute the billing depending on the customer, the warehouse, etc.
+At the heart of Strolch are three fundamental elements:
 
-And of course persistence is as simple as configuring the persistence 
-handler, pointing to your RDBMS and then setting the mode to CACHED. 
-For you as a developer there is no more thinking in terms of SQL etc., 
-as this is completely hidden from the developer. There is even a simple 
-file persistence layer if you are running IoT devices.
+1.  **Resources**: Represent static data like products, users, or machines.
+2.  **Orders**: Represent dynamic data like customer orders, tasks, or logs.
+3.  **Activities**: Represent workflows and processes, from simple steps to complex hierarchies.
 
-The runtime can be just about anything. Usually it is run inside an 
-Apache Tomcat instance as a webapp, as a WEB UI has been required for 
-all current Strolch projects. You could just as well use a main class. 
-Accessing the Strolch Agent remotely is usually done through REST.
+Every element is **parameterized**, meaning you can add new fields (Parameters) grouped in Bags at any time without changing your database schema or Java classes.
 
-Strolch is being actively developed, and customers constantly give us 
-reasons to improve and extend the framework. There is a Polymer 
-Inspector component which makes it easy to see and manipulate the 
-actual data. The new Search API makes it really easy to query your data.
+```xml
+<Resource Id="myMachine" Name="Drilling Machine" Type="Machine">
+    <ParameterBag Id="parameters" Name="Parameters" Type="Parameters">
+        <Parameter Id="serial" Name="Serial Number" Type="String" Value="SN-12345"/>
+        <Parameter Id="weight" Name="Weight" Type="Float" Value="150.5"/>
+    </ParameterBag>
+</Resource>
+```
 
-Yes, Strolch is different, but the concept has come out of the planning 
-and execution segment, and has been refined over the years until it has 
-become what it is today.
+---
 
-## API
-Check out the API page to see how to use Strolch.
+### Key Features
 
-[**More to motivation etc**](/history/).
+*   **Transactions**: Robust transaction management with pessimistic locking.
+*   **Search API**: Fluent API for querying your data model efficiently.
+*   **Service & Command Pattern**: Encapsulate your business logic in reusable, testable units.
+*   **Policy-Based Logic**: Easily swap algorithms at runtime using the Policy pattern.
+*   **Reporting**: Powerful reporting engine that works directly on your model elements.
+*   **REST & OpenAPI**: Fully documented REST API for remote access.
+*   **Admin UI**: Ready-to-use WebComponents for data inspection, user management, and more.
+
+---
+
+### Get Started in Minutes
+
+Ready to dive in? Check out our [Tutorial]({{< relref "/tutorial" >}}) to build your first Strolch application, or explore the [Documentation]({{< relref "/documentation" >}}) for a deep dive into the framework.
+
+{{% notice info %}}
+Strolch is actively developed and used in production environments ranging from industrial PLC control systems to high-level ERP integrations.
+{{% /notice %}}
+
+[**Learn more about the history of Strolch**]({{< relref "/history" >}})
