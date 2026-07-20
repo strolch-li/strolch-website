@@ -1,6 +1,6 @@
 ---
 title: 'Download'
-weight: 80
+weight: 70
 ---
 
 ## Download

@@ -1,6 +1,6 @@
 ---
 title: 'Tutorial'
-weight: 40
+weight: 10
 ---
 
 ## Let's build a bookshop!

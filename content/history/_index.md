@@ -1,7 +1,6 @@
 ---
 title: 'History'
-weight: 1000
-hidden: true
+weight: 80
 ---
 
 ## Overview
