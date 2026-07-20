@@ -99,6 +99,11 @@ home = ["HTML", "RSS", "JSON"]
     disableLatLong = false
 
 [[menu.shortcuts]]
+name = "<i class='fas fa-graduation-cap'></i> Tutorial"
+url = "/tutorial"
+weight = 1
+
+[[menu.shortcuts]]
 name = "<i class='fas fa-tags'></i> Tags"
 url = "/tags"
 weight = 5
